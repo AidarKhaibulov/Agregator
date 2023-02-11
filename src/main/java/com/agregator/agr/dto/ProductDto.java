@@ -3,6 +3,7 @@ package com.agregator.agr.dto;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 public class ProductDto {
     private Long id;
+    @NotEmpty(message = "У товара должно быть название")
     private String title;
     private String photoUrl;
     private String description;

@@ -34,6 +34,7 @@
                 name="title"
                 th:field="*{title}"
                 placeholder="Title">
+        <p th:if="${#fields.hasErrors('title')}" class="text-danger" th:errors="*{title}"></p>
       </div>
       <div class="form-group col-md-6">
         <label for="photoUrl">photo url</label>

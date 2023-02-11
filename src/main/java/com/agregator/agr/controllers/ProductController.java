@@ -3,10 +3,12 @@ package com.agregator.agr.controllers;
 import com.agregator.agr.dto.ProductDto;
 import com.agregator.agr.models.Product;
 import com.agregator.agr.services.ProductService;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +39,13 @@ public class ProductController {
     }
 
     @PostMapping("/products/new")
-    public String saveProduct(@ModelAttribute("product") Product product) {
+    public String saveProduct(@Valid @ModelAttribute("product") ProductDto product,
+                              BindingResult result,
+                              Model model) {
+        if(result.hasErrors()){
+            model.addAttribute("product",product);
+            return "products-create";
+        }
         productService.saveProduct(product);
         return "redirect:/products";
     }
@@ -50,7 +58,12 @@ public class ProductController {
     }
 
     @PostMapping("/products/{productId}/edit")
-    public String updateProduct(@PathVariable("productId") Long productId, @ModelAttribute("product") ProductDto product) {
+    public String updateProduct(@PathVariable("productId") Long productId,
+                                @Valid @ModelAttribute("product") ProductDto product,
+                                BindingResult result) {
+        if(result.hasErrors()){
+            return "products-edit";
+        }
         product.setId(productId);
         productService.updateProduct(product);
         return "redirect:/products";
