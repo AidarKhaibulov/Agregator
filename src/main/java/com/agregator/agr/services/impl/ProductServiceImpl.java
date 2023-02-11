@@ -28,8 +28,35 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.save(product);
     }
 
+    @Override
+    public ProductDto findProductById(long productId) {
+         Product product=productRepository.findById(productId).get();
+         return mapToProductDto(product);
+    }
+
+    @Override
+    public void updateProduct(ProductDto productDto) {
+        Product product=mapToProduct(productDto);
+        productRepository.save(product);
+    }
+
+    private Product mapToProduct(ProductDto product){
+        Product productDto=Product.builder()
+                .id(product.getId())
+                .title(product.getTitle())
+                .photoUrl(product.getPhotoUrl())
+                .platform(product.getPlatform())
+                .price(product.getPrice())
+                .size(product.getSize())
+                .createdOn(product.getCreatedOn())
+                .updatedOn(product.getUpdatedOn())
+                .build();
+        return productDto;
+    }
+
     private ProductDto mapToProductDto(Product product) {
         ProductDto productDto=ProductDto.builder()
+                .id(product.getId())
                 .title(product.getTitle())
                 .build();
         return productDto;

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://thmyelead.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Product edit</title>
+</head>
+<body>
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Shop in style</h1>
+            <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
+        </div>
+    </div>
+</header>
+<!-- Section-->
+<section layout:fragment="body" class="py-5">
+    <div class="container">
+        <form role="form" method="post" th:action="@{/products/{productId}/edit(productId=${product.id})}" th:object="${product}">
+            <input type="hidden" th:field="*{id}">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="title">Title</label>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="title"
+                            name="title"
+                            th:field="*{title}"
+                            placeholder="Title">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="photoUrl">photo url</label>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="photoUrl"
+                            name="photoUrl"
+                            th:field="*{photoUrl}"
+                            placeholder="Photo Url">
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="platform">platform</label>
+                    <input
+                            type="text"
+                            class="form-control"
+                            id="platform"
+                            name="platform"
+                            th:field="*{platform}"
+                            placeholder="Platform">
+                </div>
+
+                <div class="form-row mb-3">
+                    <div class="form-group col-md-6">
+                        <label for="description">Description</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="description"
+                                name="description"
+                                th:field="*{description}"
+                                placeholder="Description">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign in</button>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>

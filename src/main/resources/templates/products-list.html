@@ -37,6 +37,7 @@
                             <h5 th:text="${product.title}" class="fw-bolder">Fancy Product</h5>
                             <!-- Product price-->
                             $40.00 - $80.00
+                            <a class="btn btn-primary" th:href="@{/products/{productId}/edit(productId=${product.id})}">Edit</a>
                         </div>
                     </div>
                     <!-- Product actions-->
