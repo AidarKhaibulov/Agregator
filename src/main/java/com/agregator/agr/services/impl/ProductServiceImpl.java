@@ -23,6 +23,11 @@ public class ProductServiceImpl implements ProductService {
         return products.stream().map((product) -> mapToProductDto(product)).collect(Collectors.toList());
     }
 
+    @Override
+    public Product saveProduct(Product product) {
+        return productRepository.save(product);
+    }
+
     private ProductDto mapToProductDto(Product product) {
         ProductDto productDto=ProductDto.builder()
                 .title(product.getTitle())
