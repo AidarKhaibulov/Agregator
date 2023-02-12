@@ -69,4 +69,11 @@ public class ProductController {
         return "redirect:/products";
     }
 
+    @GetMapping("/products/{productId}")
+    public String productDetail(@PathVariable("productId") long productId, Model model){
+        ProductDto productDto=productService.findProductById(productId);
+        model.addAttribute("product",productDto);
+        return "products-detail";
+    }
+
 }

@@ -1,25 +1,12 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://thmyelead.org"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
     <title>Shop Homepage - Start Bootstrap Template</title>
 </head>
 <body>
-<!-- Header-->
-<header class="bg-dark py-5">
-    <div class="container px-4 px-lg-5 my-5">
-        <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Shop in style</h1>
-            <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
-        </div>
-    </div>
-</header>
 <!-- Section-->
 <section layout:fragment="body" class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
@@ -37,6 +24,7 @@
                             <h5 th:text="${product.title}" class="fw-bolder">Fancy Product</h5>
                             <!-- Product price-->
                             $40.00 - $80.00
+                            <a class="btn btn-primary" th:href="@{/products/{productId}(productId=${product.id})}">View</a>
                             <a class="btn btn-primary" th:href="@{/products/{productId}/edit(productId=${product.id})}">Edit</a>
                         </div>
                     </div>
