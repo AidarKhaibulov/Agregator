@@ -41,6 +41,11 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
     }
 
+    @Override
+    public void delete(Long productId) {
+        productRepository.deleteById(productId);
+    }
+
     private Product mapToProduct(ProductDto product){
         Product productDto=Product.builder()
                 .id(product.getId())
