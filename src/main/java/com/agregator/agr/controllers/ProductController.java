@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,6 +28,13 @@ public class ProductController {
         return "products-list";
     }
 
+    @GetMapping("/products/search")
+    public String searchProduct(@RequestParam(value = "query") String query, Model model) {
+        List<ProductDto> products = productService.searchProducts(query);
+        model.addAttribute("products", products);
+        return "products-list";
+    }
+
     @GetMapping("/products/new")
     public String createProduct(Model model) {
         Product product = new Product();
@@ -42,8 +46,8 @@ public class ProductController {
     public String saveProduct(@Valid @ModelAttribute("product") ProductDto product,
                               BindingResult result,
                               Model model) {
-        if(result.hasErrors()){
-            model.addAttribute("product",product);
+        if (result.hasErrors()) {
+            model.addAttribute("product", product);
             return "products-create";
         }
         productService.saveProduct(product);
@@ -61,7 +65,7 @@ public class ProductController {
     public String updateProduct(@PathVariable("productId") Long productId,
                                 @Valid @ModelAttribute("product") ProductDto product,
                                 BindingResult result) {
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             return "products-edit";
         }
         product.setId(productId);
@@ -70,16 +74,17 @@ public class ProductController {
     }
 
     @GetMapping("/products/{productId}")
-    public String productDetail(@PathVariable("productId") long productId, Model model){
-        ProductDto productDto=productService.findProductById(productId);
-        model.addAttribute("product",productDto);
+    public String productDetail(@PathVariable("productId") long productId, Model model) {
+        ProductDto productDto = productService.findProductById(productId);
+        model.addAttribute("product", productDto);
         return "products-detail";
     }
 
     @GetMapping("/products/{productId}/delete")
-    public String deleteProduct(@PathVariable("productId") Long productId){
+    public String deleteProduct(@PathVariable("productId") Long productId) {
         productService.delete(productId);
         return "redirect:/products";
     }
+
 
 }

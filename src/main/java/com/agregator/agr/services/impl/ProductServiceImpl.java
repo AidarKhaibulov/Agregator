@@ -46,6 +46,12 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(productId);
     }
 
+    @Override
+    public List<ProductDto> searchProducts(String query) {
+        List<Product> products=productRepository.searchProducts(query);
+        return products.stream().map(product -> mapToProductDto(product)).collect(Collectors.toList());
+    }
+
     private Product mapToProduct(ProductDto product){
         Product productDto=Product.builder()
                 .id(product.getId())
