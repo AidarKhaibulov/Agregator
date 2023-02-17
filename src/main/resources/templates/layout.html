@@ -3,6 +3,7 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org"
 >
 <head>
     <meta charset="UTF-8">
@@ -25,10 +26,10 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" th:href="@{products/new}">Create new product</a></li>
+            <li sec:authorize="isAuthenticated()"><a class="dropdown-item" th:href="@{/products/new}">Create new product</a></li>
             <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item" th:href="@{/login}">Login</a></li>
-            <li><a class="dropdown-item" th:href="@{/register}">Register</a></li>
+            <li sec:authorize="!isAuthenticated()"><a class="dropdown-item" th:href="@{/login}">Login</a></li>
+            <li  sec:authorize="!isAuthenticated()"><a class="dropdown-item" th:href="@{/register}">Register</a></li>
             <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
           </ul>
         </li>

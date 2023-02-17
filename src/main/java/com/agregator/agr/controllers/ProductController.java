@@ -2,7 +2,10 @@ package com.agregator.agr.controllers;
 
 import com.agregator.agr.dto.ProductDto;
 import com.agregator.agr.models.Product;
+import com.agregator.agr.models.UserEntity;
+import com.agregator.agr.security.SecurityUtil;
 import com.agregator.agr.services.ProductService;
+import com.agregator.agr.services.UserService;
 import jakarta.validation.Valid;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,18 +19,23 @@ import java.util.List;
 @Controller
 public class ProductController {
     private ProductService productService;
+    private UserService userService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, UserService userService) {
         this.productService = productService;
+        this.userService = userService;
     }
 
-    @GetMapping("/")
-    public String home (){
-        return "products-list";
-    }
     @GetMapping("/products")
     public String listProducts(Model model) {
+        UserEntity user=new UserEntity();
         List<ProductDto> productList = productService.findAllProducts();
+        String username= SecurityUtil.getSessionUser();
+        if(username!=null){
+            user=userService.findByUsername(username);
+            model.addAttribute("user",user);
+        }
+        model.addAttribute("user",user);
         model.addAttribute("products", productList);
         return "products-list";
     }
@@ -79,13 +87,21 @@ public class ProductController {
 
     @GetMapping("/products/{productId}")
     public String productDetail(@PathVariable("productId") long productId, Model model) {
+        UserEntity user=new UserEntity();
         ProductDto productDto = productService.findProductById(productId);
+        String username= SecurityUtil.getSessionUser();
+        if(username!=null){
+            user=userService.findByUsername(username);
+            model.addAttribute("user",user);
+        }
+        model.addAttribute("user",user);
         model.addAttribute("product", productDto);
         return "products-detail";
     }
 
     @GetMapping("/products/{productId}/delete")
     public String deleteProduct(@PathVariable("productId") Long productId) {
+
         productService.delete(productId);
         return "redirect:/products";
     }

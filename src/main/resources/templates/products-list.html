@@ -11,20 +11,21 @@
 <!-- Section-->
 <section layout:fragment="body" class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
-        <div th:if="${param.success}" class="aler alert-success" >
+        <div th:if="${param.success}" class="aler alert-success">
             You are registered successfully!
         </div>
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
             <div>
                 <form th:action="@{/products/search}" class="form-inline my-2 my-lg-0 mb-3">
-                    <input name="query" class="form-control mr-sm-2 mb-5" type="search" placeholder="Search products" aria-label="Search">
+                    <input name="query" class="form-control mr-sm-2 mb-5" type="search" placeholder="Search products"
+                           aria-label="Search">
                 </form>
             </div>
-            <div th:each="product :${products}"class="col mb-5">
-                <div  class="card h-100">
+            <div th:each="product :${products}" class="col mb-5">
+                <div class="card h-100">
                     <!-- Product image-->
-                 <!--   <img class="card-img-top" th:src="${product.photoUrl}" alt="..." />-->
-                    <img class="card-img-top" src="img/JRM.png" alt="..." />
+                    <!--   <img class="card-img-top" th:src="${product.photoUrl}" alt="..." />-->
+                    <img class="card-img-top" src="img/JRM.png" alt="..."/>
 
                     <!-- Product details-->
                     <div class="card-body p-4">
@@ -33,8 +34,12 @@
                             <h5 th:text="${product.title}" class="fw-bolder">Fancy Product</h5>
                             <!-- Product price-->
                             $40.00 - $80.00
-                            <a class="btn btn-primary" th:href="@{/products/{productId}(productId=${product.id})}">View</a>
-                            <a class="btn btn-primary" th:href="@{/products/{productId}/edit(productId=${product.id})}">Edit</a>
+                            <a class="btn btn-primary"
+                               th:href="@{/products/{productId}(productId=${product.id})}">View</a>
+                            <div th:if="${user.id}==${product.createdBy.id}">
+                                <a class="btn btn-primary"
+                                   th:href="@{/products/{productId}/edit(productId=${product.id})}">Edit</a>
+                            </div>
                         </div>
                     </div>
                     <!-- Product actions-->
