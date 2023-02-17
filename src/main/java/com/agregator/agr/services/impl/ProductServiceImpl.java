@@ -2,9 +2,11 @@ package com.agregator.agr.services.impl;
 
 import com.agregator.agr.dto.ProductDto;
 import com.agregator.agr.models.Product;
+import com.agregator.agr.models.UserEntity;
 import com.agregator.agr.repositories.ProductRepository;
+import com.agregator.agr.repositories.UserRepository;
+import com.agregator.agr.security.SecurityUtil;
 import com.agregator.agr.services.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -14,8 +16,10 @@ import java.util.stream.DoubleStream;
 @Service
 public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
-    public ProductServiceImpl(ProductRepository productRepository){
+    private UserRepository userRepository;
+    public ProductServiceImpl(ProductRepository productRepository, UserRepository userRepository){
         this.productRepository=productRepository;
+        this.userRepository=userRepository;
     }
     @Override
     public List<ProductDto> findAllProducts() {
@@ -25,7 +29,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product saveProduct(ProductDto productDto) {
+        String username = SecurityUtil.getSessionUser();
+        UserEntity user= userRepository.findByUsername(username);
         Product product= mapToProduct(productDto);
+        product.setCreatedBy(user);
         return productRepository.save(product);
     }
 
@@ -37,7 +44,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void updateProduct(ProductDto productDto) {
+        String username = SecurityUtil.getSessionUser();
+        UserEntity user= userRepository.findByUsername(username);
         Product product=mapToProduct(productDto);
+        product.setCreatedBy(user);
         productRepository.save(product);
     }
 
@@ -60,6 +70,7 @@ public class ProductServiceImpl implements ProductService {
                 .platform(product.getPlatform())
                 .price(product.getPrice())
                 .size(product.getSize())
+                .createdBy(product.getCreatedBy())
                 .createdOn(product.getCreatedOn())
                 .updatedOn(product.getUpdatedOn())
                 .build();
@@ -70,6 +81,7 @@ public class ProductServiceImpl implements ProductService {
         ProductDto productDto=ProductDto.builder()
                 .id(product.getId())
                 .title(product.getTitle())
+                .createdBy(product.getCreatedBy())
                 .build();
         return productDto;
     }

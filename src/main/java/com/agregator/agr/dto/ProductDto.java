@@ -1,5 +1,6 @@
 package com.agregator.agr.dto;
 
+import com.agregator.agr.models.UserEntity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,4 +25,5 @@ public class ProductDto {
     private Double price;
     private LocalDateTime createdOn;
     private LocalDateTime updatedOn;
+    private UserEntity createdBy;
 }
