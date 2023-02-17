@@ -21,6 +21,10 @@ public class ProductController {
         this.productService = productService;
     }
 
+    @GetMapping("/")
+    public String home (){
+        return "products-list";
+    }
     @GetMapping("/products")
     public String listProducts(Model model) {
         List<ProductDto> productList = productService.findAllProducts();
