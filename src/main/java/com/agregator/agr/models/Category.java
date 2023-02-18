@@ -20,8 +20,13 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    //private Short subCategory;
+
+    @ManyToOne
+    @JoinColumn(name = "sub_category_id")
+    private subCategory subCategory;
 
     @OneToMany(mappedBy = "category",cascade = CascadeType.REFRESH)
     private Set<Product> products=new HashSet<>();
+
+
 }
