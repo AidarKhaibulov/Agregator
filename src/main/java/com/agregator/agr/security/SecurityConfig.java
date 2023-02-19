@@ -29,12 +29,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/login", "/", "/home", "/css/**", "/js/**", "/register/save","/register").permitAll()
+                        .requestMatchers("/login", "/","/products","/home", "/css/**", "/js/**","/register").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/er")
+                        .defaultSuccessUrl("/home")
                         .loginProcessingUrl("/login")
                         .failureUrl("/login?error=true")
                         .permitAll()

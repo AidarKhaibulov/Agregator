@@ -24,16 +24,20 @@ public class ProductController {
         this.userService = userService;
     }
 
+    @GetMapping("/home")
+    public String home(){
+        return "index";
+    }
     @GetMapping("/products")
     public String listProducts(Model model) {
-        UserEntity user=new UserEntity();
+        UserEntity user = new UserEntity();
         List<ProductDto> productList = productService.findAllProducts();
-        String username= SecurityUtil.getSessionUser();
-        if(username!=null){
-            user=userService.findByUsername(username);
-            model.addAttribute("user",user);
+        String username = SecurityUtil.getSessionUser();
+        if (username != null) {
+            user = userService.findByUsername(username);
+            model.addAttribute("user", user);
         }
-        model.addAttribute("user",user);
+        model.addAttribute("user", user);
         model.addAttribute("products", productList);
         //return "products-list";
         return "shop";
@@ -43,9 +47,14 @@ public class ProductController {
     public String searchProduct(@RequestParam(value = "query") String query, Model model) {
         List<ProductDto> products = productService.searchProducts(query);
         model.addAttribute("products", products);
-        return "products-list";
+        return "shop";
     }
-
+    @GetMapping("/products/searchByCategory")
+    public String searchProductByCategory(@RequestParam(value = "query") String query, Model model) {
+        List<ProductDto> products = productService.searchProductsByCategory(query);
+        model.addAttribute("products", products);
+        return "shop";
+    }
     @GetMapping("/products/new")
     public String createProduct(Model model) {
         Product product = new Product();
@@ -86,14 +95,14 @@ public class ProductController {
 
     @GetMapping("/products/{productId}")
     public String productDetail(@PathVariable("productId") long productId, Model model) {
-        UserEntity user=new UserEntity();
+        UserEntity user = new UserEntity();
         ProductDto productDto = productService.findProductById(productId);
-        String username= SecurityUtil.getSessionUser();
-        if(username!=null){
-            user=userService.findByUsername(username);
-            model.addAttribute("user",user);
+        String username = SecurityUtil.getSessionUser();
+        if (username != null) {
+            user = userService.findByUsername(username);
+            model.addAttribute("user", user);
         }
-        model.addAttribute("user",user);
+        model.addAttribute("user", user);
         model.addAttribute("product", productDto);
         return "products-detail";
     }

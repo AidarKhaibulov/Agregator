@@ -62,6 +62,12 @@ public class ProductServiceImpl implements ProductService {
         return products.stream().map(product -> mapToProductDto(product)).collect(Collectors.toList());
     }
 
+    @Override
+    public List<ProductDto> searchProductsByCategory(String query) {
+        List<Product> products=productRepository.searchProductsByCategory(query);
+        return products.stream().map(product -> mapToProductDto(product)).collect(Collectors.toList());
+    }
+
     private Product mapToProduct(ProductDto product){
         Product productDto=Product.builder()
                 .id(product.getId())
@@ -81,6 +87,8 @@ public class ProductServiceImpl implements ProductService {
         ProductDto productDto=ProductDto.builder()
                 .id(product.getId())
                 .title(product.getTitle())
+                .photoUrl(product.getPhotoUrl())
+                .price(product.getPrice())
                 .createdBy(product.getCreatedBy())
                 .build();
         return productDto;
