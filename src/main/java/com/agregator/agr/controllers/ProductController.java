@@ -55,14 +55,14 @@ public class ProductController {
         model.addAttribute("products", products);
         return "shop";
     }
-    @GetMapping("/products/new")
+    @GetMapping("/newProduct")
     public String createProduct(Model model) {
         Product product = new Product();
         model.addAttribute("product", product);
         return "products-create";
     }
 
-    @PostMapping("/products/new")
+    @PostMapping("/newProduct")
     public String saveProduct(@Valid @ModelAttribute("product") ProductDto product,
                               BindingResult result,
                               Model model) {
@@ -104,7 +104,7 @@ public class ProductController {
         }
         model.addAttribute("user", user);
         model.addAttribute("product", productDto);
-        return "products-detail";
+        return "detail";
     }
 
     @GetMapping("/products/{productId}/delete")

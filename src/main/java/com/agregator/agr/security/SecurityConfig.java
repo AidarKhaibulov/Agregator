@@ -29,12 +29,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/login", "/","/products","/home", "/css/**", "/js/**","/register").permitAll()
+                        .requestMatchers("/login", "/","/products","/home", "/css/**", "/js/**","/register",
+                                "/img/**","/lib/**","/mail/**","/scss/**","/products/searchByCategory",
+                                "/products/search","/products/*").permitAll()
                         .anyRequest().authenticated()
+
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/home")
+                        .defaultSuccessUrl("/")
                         .loginProcessingUrl("/login")
                         .failureUrl("/login?error=true")
                         .permitAll()
@@ -53,6 +56,5 @@ public class SecurityConfig {
     public void configure(AuthenticationManagerBuilder builder) throws Exception {
         builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
-
 }
 
