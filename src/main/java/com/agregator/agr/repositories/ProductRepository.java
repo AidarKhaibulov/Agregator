@@ -11,6 +11,6 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     List<Product> searchProducts(String query);
 
     //TODO: rewrite sql query in order to find by categories
-@Query("select p from Product p  where p.title like concat('%',:query,'%')")
+@Query("select p from Product p join Category c on c.id = p.category.id where c.name like concat('%',:query,'%')")
     List<Product> searchProductsByCategory(String query);
 }
