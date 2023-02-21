@@ -9,10 +9,9 @@ import com.agregator.agr.security.SecurityUtil;
 import com.agregator.agr.services.ProductService;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
+
 @Service
 public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
@@ -67,8 +66,8 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products=productRepository.searchProductsByCategory(query);
         return products.stream().map(product -> mapToProductDto(product)).collect(Collectors.toList());
     }
-
-    private Product mapToProduct(ProductDto product){
+    @Override
+    public Product mapToProduct(ProductDto product){
         Product productDto=Product.builder()
                 .id(product.getId())
                 .title(product.getTitle())
@@ -88,8 +87,12 @@ public class ProductServiceImpl implements ProductService {
                 .id(product.getId())
                 .title(product.getTitle())
                 .photoUrl(product.getPhotoUrl())
+                .platform(product.getPlatform())
                 .price(product.getPrice())
+                .size(product.getSize())
                 .createdBy(product.getCreatedBy())
+                .createdOn(product.getCreatedOn())
+                .updatedOn(product.getUpdatedOn())
                 .build();
         return productDto;
     }

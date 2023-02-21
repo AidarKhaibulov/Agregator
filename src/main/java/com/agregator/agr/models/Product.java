@@ -10,6 +10,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -39,4 +42,7 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "created_by")
     private UserEntity createdBy;
+    
+    @ManyToMany(mappedBy = "products")
+    private List<Cart> carts = new ArrayList<>();
 }

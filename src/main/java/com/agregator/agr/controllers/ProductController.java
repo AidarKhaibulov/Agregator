@@ -1,9 +1,11 @@
 package com.agregator.agr.controllers;
 
 import com.agregator.agr.dto.ProductDto;
+import com.agregator.agr.models.Cart;
 import com.agregator.agr.models.Product;
 import com.agregator.agr.models.UserEntity;
 import com.agregator.agr.security.SecurityUtil;
+import com.agregator.agr.services.CartService;
 import com.agregator.agr.services.ProductService;
 import com.agregator.agr.services.UserService;
 import jakarta.validation.Valid;
@@ -18,16 +20,19 @@ import java.util.List;
 public class ProductController {
     private ProductService productService;
     private UserService userService;
+    private CartService cartService;
 
-    public ProductController(ProductService productService, UserService userService) {
+    public ProductController(ProductService productService, UserService userService, CartService cartService) {
         this.productService = productService;
         this.userService = userService;
+        this.cartService=cartService;
     }
 
     @GetMapping("/home")
-    public String home(){
+    public String home() {
         return "index";
     }
+
     @GetMapping("/products")
     public String listProducts(Model model) {
         UserEntity user = new UserEntity();
@@ -49,12 +54,14 @@ public class ProductController {
         model.addAttribute("products", products);
         return "shop";
     }
+
     @GetMapping("/products/searchByCategory")
     public String searchProductByCategory(@RequestParam(value = "query") String query, Model model) {
         List<ProductDto> products = productService.searchProductsByCategory(query);
         model.addAttribute("products", products);
         return "shop";
     }
+
     @GetMapping("/newProduct")
     public String createProduct(Model model) {
         Product product = new Product();
@@ -81,18 +88,6 @@ public class ProductController {
         return "products-edit";
     }
 
-    @PostMapping("/products/{productId}/edit")
-    public String updateProduct(@PathVariable("productId") Long productId,
-                                @Valid @ModelAttribute("product") ProductDto product,
-                                BindingResult result) {
-        if (result.hasErrors()) {
-            return "products-edit";
-        }
-        product.setId(productId);
-        productService.updateProduct(product);
-        return "redirect:/products";
-    }
-
     @GetMapping("/products/{productId}")
     public String productDetail(@PathVariable("productId") long productId, Model model) {
         UserEntity user = new UserEntity();
@@ -114,5 +109,29 @@ public class ProductController {
         return "redirect:/products";
     }
 
+    @PostMapping("/products/{productId}/edit")
+    public String updateProduct(@PathVariable("productId") Long productId,
+                                @Valid @ModelAttribute("product") ProductDto product,
+                                BindingResult result) {
+        if (result.hasErrors()) {
+            return "products-edit";
+        }
+        product.setId(productId);
+        productService.updateProduct(product);
+        return "redirect:/products";
+    }
+
+    @PostMapping("/addToFavorite/{productId}")
+    public String addToFavorite(@PathVariable("productId") Long productId) {
+        String username = SecurityUtil.getSessionUser();
+        UserEntity currentUser= userService.findByUsername(username);
+        Cart currentCart = cartService.findCartByUser(currentUser);
+        var currentProductList=currentCart.getProducts();
+        Product product=productService.mapToProduct(productService.findProductById(productId));
+        currentProductList.add(product);
+        currentCart.setProducts(currentProductList);
+        cartService.saveCart(currentCart);
+        return "redirect:/";
+    }
 
 }

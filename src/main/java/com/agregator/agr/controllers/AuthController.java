@@ -1,7 +1,9 @@
 package com.agregator.agr.controllers;
 
 import com.agregator.agr.dto.RegistrationDto;
+import com.agregator.agr.models.Cart;
 import com.agregator.agr.models.UserEntity;
+import com.agregator.agr.services.CartService;
 import com.agregator.agr.services.UserService;
 import jakarta.validation.Valid;
 import org.apache.catalina.User;
@@ -19,6 +21,7 @@ public class AuthController {
     private UserService userService;
 
     public AuthController(UserService userService) {
+
         this.userService = userService;
     }
 
