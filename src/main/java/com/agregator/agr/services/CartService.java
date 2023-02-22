@@ -14,4 +14,6 @@ public interface CartService {
     Cart findCartById(long cartId);
 
     Cart findCartByUser(UserEntity user);
+
+    void updateCart(Cart currentCart);
 }

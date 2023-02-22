@@ -25,7 +25,7 @@ public class ProductController {
     public ProductController(ProductService productService, UserService userService, CartService cartService) {
         this.productService = productService;
         this.userService = userService;
-        this.cartService=cartService;
+        this.cartService = cartService;
     }
 
     @GetMapping("/home")
@@ -124,14 +124,18 @@ public class ProductController {
     @PostMapping("/addToFavorite/{productId}")
     public String addToFavorite(@PathVariable("productId") Long productId) {
         String username = SecurityUtil.getSessionUser();
-        UserEntity currentUser= userService.findByUsername(username);
+        UserEntity currentUser = userService.findByUsername(username);
         Cart currentCart = cartService.findCartByUser(currentUser);
-        var currentProductList=currentCart.getProducts();
-        Product product=productService.mapToProduct(productService.findProductById(productId));
-        currentProductList.add(product);
-        currentCart.setProducts(currentProductList);
-        cartService.saveCart(currentCart);
-        return "redirect:/";
+        var currentProductList = currentCart.getProducts();
+        Product product = productService.mapToProduct(productService.findProductById(productId));
+        if (currentProductList.contains(product)) {
+            return "redirect:/";
+        }
+        else {
+            currentProductList.add(product);
+            currentCart.setProducts(currentProductList);
+            cartService.updateCart(currentCart);
+            return "redirect:/";
+        }
     }
-
 }

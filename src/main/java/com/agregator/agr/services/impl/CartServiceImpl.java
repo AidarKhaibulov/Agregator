@@ -32,4 +32,9 @@ public class CartServiceImpl implements CartService {
         Cart cart= cartRepository.findByUser(user);
         return cart;
     }
+
+    @Override
+    public void updateCart(Cart currentCart) {
+        cartRepository.save(currentCart);
+    }
 }

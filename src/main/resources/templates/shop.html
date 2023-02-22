@@ -339,15 +339,12 @@
                                class="btn btn-sm text-dark p-0"><i
                                     class="fas fa-eye text-primary mr-1"></i>Подробнее</a>
 
-                           <!-- <form role="form" method="post" th:action="@{/products/{productId}/edit(productId=${product.id})}" th:object="${product}">
-                                <input type="hidden" th:field="*{id}">
-                                <div class="form-row">
-                                    <button type="submit" class="btn btn-primary">Sign in</button>
-                                </div>
-                            </form>-->
-
-                            <form role="form" th:action="@{/addToFavorite/{productId}(productId=${product.id})}" th:object="${product}" method="post">
-                                <button type="submit" name="add" class="fas fa-heart text-primary mr-1"></button>
+                            <!--<div th:if="${}==${product.id}">
+                                <a class="btn btn-primary"
+                                   th:href="@{/products/{productId}/edit(productId=${product.id})}">Edit</a>
+                            </div>-->
+                            <form  th:action="@{/addToFavorite/{productId}(productId=${product.id})}" method="post">
+                                <button type="submit" name="add" class="fas fa-heart text-primary mr-1 ">В избранное</button>
                             </form>
 
                             <!--<a method="post" th:action="@{/addToFavorite/{productsId}(productId=${product.id})}" th:object="${product}" class="btn btn-sm text-dark p-0"><i class="fas fa-heart text-primary mr-1"></i>В
