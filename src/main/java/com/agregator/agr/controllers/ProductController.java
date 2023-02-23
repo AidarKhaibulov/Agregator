@@ -1,5 +1,6 @@
 package com.agregator.agr.controllers;
 
+import com.agregator.agr.api.VkApi;
 import com.agregator.agr.dto.ProductDto;
 import com.agregator.agr.models.Cart;
 import com.agregator.agr.models.Product;
@@ -8,6 +9,9 @@ import com.agregator.agr.security.SecurityUtil;
 import com.agregator.agr.services.CartService;
 import com.agregator.agr.services.ProductService;
 import com.agregator.agr.services.UserService;
+import com.vk.api.sdk.client.VkApiClient;
+import com.vk.api.sdk.exceptions.ApiException;
+import com.vk.api.sdk.exceptions.ClientException;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +33,9 @@ public class ProductController {
     }
 
     @GetMapping("/home")
-    public String home() {
+    public String home() throws ClientException, ApiException {
+        VkApi vk= new VkApi();
+        vk.getProducts(10);
         return "index";
     }
 
