@@ -20,4 +20,6 @@ public interface ProductService {
     List<ProductDto> searchProductsByCategory(String query);
 
     Product mapToProduct(ProductDto product);
+
+    ProductDto mapToProductDto(Product product);
 }

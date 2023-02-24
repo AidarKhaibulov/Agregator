@@ -78,11 +78,12 @@ public class ProductServiceImpl implements ProductService {
                 .createdBy(product.getCreatedBy())
                 .createdOn(product.getCreatedOn())
                 .updatedOn(product.getUpdatedOn())
+                .description(product.getDescription())
                 .build();
         return productDto;
     }
-
-    private ProductDto mapToProductDto(Product product) {
+@Override
+    public ProductDto mapToProductDto(Product product) {
         ProductDto productDto=ProductDto.builder()
                 .id(product.getId())
                 .title(product.getTitle())
@@ -93,6 +94,7 @@ public class ProductServiceImpl implements ProductService {
                 .createdBy(product.getCreatedBy())
                 .createdOn(product.getCreatedOn())
                 .updatedOn(product.getUpdatedOn())
+                .description(product.getDescription())
                 .build();
         return productDto;
     }

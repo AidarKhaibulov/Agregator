@@ -34,7 +34,7 @@ public class ProductController {
 
     @GetMapping("/home")
     public String home() throws ClientException, ApiException {
-        VkApi vk= new VkApi();
+        VkApi vk= new VkApi(productService);
         vk.getProducts(10);
         return "index";
     }
