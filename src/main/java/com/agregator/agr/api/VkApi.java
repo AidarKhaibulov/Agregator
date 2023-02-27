@@ -42,7 +42,8 @@ public class VkApi {
 
             Product product = new Product();
 
-            String regex = "(ПРИМЕЧАНИЕ ОТ АДМИНИСТРАЦИИ)|([П|п]роверенный [П|п]родавец)";
+            String regex = "(ПРИМЕЧАНИЕ ОТ АДМИНИСТРАЦИИ)|([П|п]роверенный [П|п]родавец)|" +
+                    "(списке проверенных продавцов под номером)";
             Pattern pattern = Pattern.compile(regex);
             String text=post.getText();
             String author="";
@@ -50,23 +51,25 @@ public class VkApi {
                 author="https://vk.com/id"+post.getSignerId();
             Matcher matcher = pattern.matcher(text);
 
-            product.setTitle("vk");
-            product.setDescription(text);
-            product.setPlatform(author);
+
             if(matcher.find()) {
+                product.setTitle("vk");
+                product.setDescription(text);
+                product.setPlatform(author);
                 System.out.println(author);
                 System.out.println(text);
                 StringBuilder urls = new StringBuilder();
                 for (var attachment : post.getAttachments()) {
                     if (attachment.getType().toString() == "photo") {
                         System.out.println(attachment.getPhoto().getSizes().get(0).getUrl());
-                        product.setPhotoUrl(String.valueOf(attachment.getPhoto().getSizes().get(0).getUrl()));
+                        product.setPhotoUrl(String.valueOf(attachment.getPhoto().getSizes().get(3).getUrl()));
                     }
                 }
                 System.out.println("_______________________________________________");
+                productService.saveProduct(productService.mapToProductDto(product));
             }
 
-            productService.saveProduct(productService.mapToProductDto(product));
+
         }
 
         return null;

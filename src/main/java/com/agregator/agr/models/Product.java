@@ -26,7 +26,8 @@ public class Product {
     private Long id;
     private String title;
     private String photoUrl;
-    @Column(name = "description", length = 1024)
+    @Column(name = "description", length = 4096)
+
     private String description;
     private String platform;
     private String size;
