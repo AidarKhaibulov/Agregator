@@ -25,6 +25,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    @Column(name = "photo_url", length = 4096)
     private String photoUrl;
     @Column(name = "description", length = 4096)
 

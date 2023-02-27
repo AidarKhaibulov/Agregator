@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -103,8 +104,14 @@ public class ProductController {
             user = userService.findByUsername(username);
             model.addAttribute("user", user);
         }
+
+        String urls = productDto.getPhotoUrl();
+        String[] photos = urls.split("\n");
+        for(String ph: photos)
+            System.out.println(ph);
         model.addAttribute("user", user);
         model.addAttribute("product", productDto);
+        model.addAttribute("photos",photos);
         return "detail";
     }
 
