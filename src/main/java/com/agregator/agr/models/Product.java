@@ -46,6 +46,6 @@ public class Product {
     @JoinColumn(name = "created_by")
     private UserEntity createdBy;
     
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany(mappedBy = "products", cascade = CascadeType.REMOVE)
     private List<Cart> carts = new ArrayList<>();
 }

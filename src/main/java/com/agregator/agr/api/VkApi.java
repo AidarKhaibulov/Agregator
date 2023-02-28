@@ -1,6 +1,5 @@
 package com.agregator.agr.api;
 
-import com.agregator.agr.dto.ProductDto;
 import com.agregator.agr.models.Product;
 import com.agregator.agr.services.ProductService;
 import com.vk.api.sdk.client.TransportClient;
@@ -9,13 +8,9 @@ import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
-import com.vk.api.sdk.objects.wall.WallpostAttachment;
 import com.vk.api.sdk.objects.wall.responses.GetResponse;
-import org.apache.commons.collections4.map.HashedMap;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,29 +28,42 @@ public class VkApi {
         this.productService = productService;
     }
 
-    public String getProducts(int productsAmount) throws ClientException, ApiException {
-        GetResponse getResponse = vk.wall().get(actor)
+    public void getProducts(int productsAmount) throws ClientException, ApiException {
+        String addsFiterRegex = "(ПРИМЕЧАНИЕ ОТ АДМИНИСТРАЦИИ)|([П|п]роверенный [П|п]родавец)|" +
+                "(списке проверенных продавцов под номером)";
+        String productsTagsRegex="([Б|б]отинки)|([К|к]россовки)|([К|к]уртка)|([S|s]oft[S|s]hell)|([К|к]арабины)|" +
+                "([с|С]пальный мешок)|([П|п]уховик)|([Р|р]юкзак)|([П|п]алатка)|([Т|т]ермобель[ё|е])";
+        GetResponse groupPosts = vk.wall().get(actor)
                 .count(productsAmount)
                 .domain("place_for_tourist")
                 .execute();
-        var wallPosts = getResponse.getItems();
+        var wallPosts = groupPosts.getItems();
         for (var post : wallPosts) {
             Product product = new Product();
-            String regex = "(ПРИМЕЧАНИЕ ОТ АДМИНИСТРАЦИИ)|([П|п]роверенный [П|п]родавец)|" +
-                    "(списке проверенных продавцов под номером)";
-            Pattern pattern = Pattern.compile(regex);
             String text = post.getText();
             String author = "";
+            StringBuilder title = new StringBuilder("Объявление VK");
+
             if (post.getSignerId() != null)
                 author = "https://vk.com/id" + post.getSignerId();
-            Matcher matcher = pattern.matcher(text);
-
-            if (matcher.find()) {
-                product.setTitle("vk");
+            Pattern pattern = Pattern.compile(addsFiterRegex);
+            Matcher allowedPosts = pattern.matcher(text);
+            if (allowedPosts.find()) {
+                List<String> allMatches = new ArrayList<>();
+                Matcher productsTags = Pattern.compile(productsTagsRegex)
+                        .matcher(text);
+                while (productsTags.find())
+                    allMatches.add(productsTags.group());
+                Set<String> tags = new HashSet<>();
+                for(String match: allMatches){
+                    if (!tags.contains(match.toLowerCase())) {
+                        title.append(" " + match.toLowerCase());
+                        tags.add(match.toLowerCase());
+                    }
+                }
+                product.setTitle(String.valueOf(title));
                 product.setDescription(text);
                 product.setPlatform(author);
-                System.out.println(author);
-                System.out.println(text);
                 StringBuilder urls = new StringBuilder();
                 for (var attachment : post.getAttachments()) {
                     if (attachment.getType().toString() == "photo") {
@@ -65,11 +73,9 @@ public class VkApi {
                 }
                 urls.deleteCharAt(0);
                 product.setPhotoUrl(String.valueOf(urls));
-                System.out.println("_______________________________________________");
                 productService.saveProduct(productService.mapToProductDto(product));
             }
         }
-        return null;
     }
 
 }
