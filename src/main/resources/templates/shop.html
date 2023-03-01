@@ -56,9 +56,10 @@
             </a>
         </div>
         <div class="col-lg-6 col-6 text-left">
-            <form action="">
+
+            <form th:action="@{/products/search}">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for products">
+                    <input name="query" class="form-control" type="search" placeholder="Искать по названию">
                     <div class="input-group-append">
                             <span class="input-group-text bg-transparent text-primary">
                                 <i class="fa fa-search"></i>
@@ -66,6 +67,7 @@
                     </div>
                 </div>
             </form>
+
         </div>
         <div class="col-lg-3 col-6 text-right">
             <a href="" class="btn border">
@@ -292,16 +294,7 @@
             <div class="row pb-3">
                 <div class="col-12 pb-1">
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                        <form action="">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search by name">
-                                <div class="input-group-append">
-                                        <span class="input-group-text bg-transparent text-primary">
-                                            <i class="fa fa-search"></i>
-                                        </span>
-                                </div>
-                            </div>
-                        </form>
+
                         <div class="dropdown ml-4">
                             <button class="btn border dropdown-toggle" type="button" id="triggerId"
                                     data-toggle="dropdown" aria-haspopup="true"
@@ -336,14 +329,13 @@
                                class="btn btn-sm text-dark p-0"><i
                                     class="fas fa-eye text-primary mr-1"></i>Подробнее</a>
 
-                            <!--<div th:if="${}==${product.id}">
-                                <a class="btn btn-primary"
-                                   th:href="@{/products/{productId}/edit(productId=${product.id})}">Edit</a>
-                            </div>-->
-                            <form  th:action="@{/addToFavorite/{productId}(productId=${product.id})}" method="post">
-                                <button type="submit" name="add" class="fas fa-heart text-primary mr-1 ">В избранное</button>
-                            </form>
-
+                            <div th:if="${!productsInCart.contains(product.getId())}">
+                                <form th:action="@{/addToFavorite/{productId}(productId=${product.id})}" method="post">
+                                    <button type="submit" name="add" class="btn btn-sm text-dark p-0"><i
+                                            class="fas fa-heart text-primary mr-1"></i>В избранное
+                                    </button>
+                                </form>
+                            </div>
                             <!--<a method="post" th:action="@{/addToFavorite/{productsId}(productId=${product.id})}" th:object="${product}" class="btn btn-sm text-dark p-0"><i class="fas fa-heart text-primary mr-1"></i>В
                                 избранное</a>-->
                         </div>

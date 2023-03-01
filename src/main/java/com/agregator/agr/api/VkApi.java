@@ -31,12 +31,9 @@ public class VkApi {
     public void getProducts(int productsAmount) throws ClientException, ApiException {
         String addsFiterRegex = "(ПРИМЕЧАНИЕ ОТ АДМИНИСТРАЦИИ)|([П|п]роверенный [П|п]родавец)|" +
                 "(списке проверенных продавцов под номером)";
-        String productsTagsRegex="([Б|б]отинки)|([К|к]россовки)|([К|к]уртка)|([S|s]oft[S|s]hell)|([К|к]арабины)|" +
+        String productsTagsRegex = "([Б|б]отинки)|([К|к]россовки)|([К|к]уртка)|([S|s]oft[S|s]hell)|([К|к]арабины)|" +
                 "([с|С]пальный мешок)|([П|п]уховик)|([Р|р]юкзак)|([П|п]алатка)|([Т|т]ермобель[ё|е])";
-        GetResponse groupPosts = vk.wall().get(actor)
-                .count(productsAmount)
-                .domain("place_for_tourist")
-                .execute();
+        GetResponse groupPosts = vk.wall().get(actor).count(productsAmount).domain("place_for_tourist").execute();
         var wallPosts = groupPosts.getItems();
         for (var post : wallPosts) {
             Product product = new Product();
@@ -44,33 +41,28 @@ public class VkApi {
             String author = "";
             StringBuilder title = new StringBuilder("Объявление VK");
 
-            if (post.getSignerId() != null)
-                author = "https://vk.com/id" + post.getSignerId();
+            if (post.getSignerId() != null) author = "https://vk.com/id" + post.getSignerId();
             Pattern pattern = Pattern.compile(addsFiterRegex);
             Matcher allowedPosts = pattern.matcher(text);
             if (allowedPosts.find()) {
                 List<String> allMatches = new ArrayList<>();
-                Matcher productsTags = Pattern.compile(productsTagsRegex)
-                        .matcher(text);
-                while (productsTags.find())
-                    allMatches.add(productsTags.group());
+                Matcher productsTags = Pattern.compile(productsTagsRegex).matcher(text);
+                while (productsTags.find()) allMatches.add(productsTags.group());
                 Set<String> tags = new HashSet<>();
-                for(String match: allMatches){
+                for (String match : allMatches)
                     if (!tags.contains(match.toLowerCase())) {
                         title.append(" " + match.toLowerCase());
                         tags.add(match.toLowerCase());
                     }
-                }
                 product.setTitle(String.valueOf(title));
                 product.setDescription(text);
                 product.setPlatform(author);
                 StringBuilder urls = new StringBuilder();
-                for (var attachment : post.getAttachments()) {
+                for (var attachment : post.getAttachments())
                     if (attachment.getType().toString() == "photo") {
                         System.out.println(attachment.getPhoto().getSizes().get(3).getUrl());
                         urls.append(("\n" + attachment.getPhoto().getSizes().get(3).getUrl()));
                     }
-                }
                 urls.deleteCharAt(0);
                 product.setPhotoUrl(String.valueOf(urls));
                 productService.saveProduct(productService.mapToProductDto(product));

@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -45,14 +46,40 @@ public class ProductController {
         UserEntity user = new UserEntity();
         List<ProductDto> productList = productService.findAllProducts();
         String username = SecurityUtil.getSessionUser();
+        List<Long> productsInCart = new ArrayList<>();
         if (username != null) {
             user = userService.findByUsername(username);
+            user.getCart().getProducts().forEach(p -> productsInCart.add(p.getId()));
             model.addAttribute("user", user);
         }
+        model.addAttribute("productsInCart",productsInCart);
         model.addAttribute("user", user);
         model.addAttribute("products", productList);
-        //return "products-list";
+
         return "shop";
+    }
+
+    @GetMapping("/products/{productId}")
+    public String productDetail(@PathVariable("productId") long productId, Model model) {
+        UserEntity user = new UserEntity();
+        ProductDto productDto = productService.findProductById(productId);
+        String username = SecurityUtil.getSessionUser();
+        List<Long> productsInCart = new ArrayList<>();
+        if (username != null) {
+            user = userService.findByUsername(username);
+            user.getCart().getProducts().forEach(p -> productsInCart.add(p.getId()));
+            model.addAttribute("user", user);
+        }
+
+        String urls = productDto.getPhotoUrl();
+        String[] photos = urls.split("\n");
+        for(String ph: photos)
+            System.out.println(ph);
+        model.addAttribute("user", user);
+        model.addAttribute("productsInCart",productsInCart);
+        model.addAttribute("product", productDto);
+        model.addAttribute("photos",photos);
+        return "detail";
     }
 
     @GetMapping("/products/search")
@@ -93,26 +120,6 @@ public class ProductController {
         ProductDto product = productService.findProductById(productId);
         model.addAttribute("product", product);
         return "products-edit";
-    }
-
-    @GetMapping("/products/{productId}")
-    public String productDetail(@PathVariable("productId") long productId, Model model) {
-        UserEntity user = new UserEntity();
-        ProductDto productDto = productService.findProductById(productId);
-        String username = SecurityUtil.getSessionUser();
-        if (username != null) {
-            user = userService.findByUsername(username);
-            model.addAttribute("user", user);
-        }
-
-        String urls = productDto.getPhotoUrl();
-        String[] photos = urls.split("\n");
-        for(String ph: photos)
-            System.out.println(ph);
-        model.addAttribute("user", user);
-        model.addAttribute("product", productDto);
-        model.addAttribute("photos",photos);
-        return "detail";
     }
 
     @GetMapping("/products/{productId}/delete")
