@@ -27,6 +27,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductDto> findCertainNumberOfProductsStartFrom(int start, int end) {
+        List<Product> products=productRepository.findCertainNumberOfProductsStartFrom(start, end);
+        return products.stream().map((product) -> mapToProductDto(product)).collect(Collectors.toList());
+    }
+
+    @Override
     public Product saveProduct(ProductDto productDto) {
         String username = SecurityUtil.getSessionUser();
         UserEntity user= userRepository.findByUsername(username);
@@ -98,4 +104,5 @@ public class ProductServiceImpl implements ProductService {
                 .build();
         return productDto;
     }
+
 }

@@ -7,6 +7,9 @@ import java.util.List;
 
 public interface ProductService {
     List<ProductDto> findAllProducts();
+
+    List<ProductDto> findCertainNumberOfProductsStartFrom(int start, int end);
+
     Product saveProduct(ProductDto product);
 
     ProductDto findProductById(long productId);
@@ -22,4 +25,5 @@ public interface ProductService {
     Product mapToProduct(ProductDto product);
 
     ProductDto mapToProductDto(Product product);
+
 }

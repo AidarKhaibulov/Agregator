@@ -9,7 +9,6 @@ import com.agregator.agr.security.SecurityUtil;
 import com.agregator.agr.services.CartService;
 import com.agregator.agr.services.ProductService;
 import com.agregator.agr.services.UserService;
-import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +19,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -42,10 +40,10 @@ public class ProductController {
         return "index";
     }
 
-    @GetMapping("/products")
-    public String listProducts(Model model) {
+    @GetMapping("/products/{pageNumber}")
+    public String listProducts(@PathVariable("pageNumber") int pageNumber,Model model) {
         UserEntity user = new UserEntity();
-        List<ProductDto> productList = productService.findAllProducts();
+        List<ProductDto> productList = productService.findCertainNumberOfProductsStartFrom((pageNumber-1)*15,15);
         String username = SecurityUtil.getSessionUser();
         List<Long> productsInCart = new ArrayList<>();
         if (username != null) {
@@ -56,11 +54,10 @@ public class ProductController {
         model.addAttribute("productsInCart", productsInCart);
         model.addAttribute("user", user);
         model.addAttribute("products", productList);
-
         return "shop";
     }
 
-    @GetMapping("/products/{productId}")
+    @GetMapping("/product/{productId}")
     public String productDetail(@PathVariable("productId") long productId, Model model) {
         UserEntity user = new UserEntity();
         ProductDto productDto = productService.findProductById(productId);

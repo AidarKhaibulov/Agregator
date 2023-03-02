@@ -112,7 +112,7 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a th:href="@{/products}" class="nav-item nav-link active">Объявления</a>
+                            <a th:href="@{/products/{pageNumber}(pageNumber=1)}" class="nav-item nav-link active">Объявления</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Мои объявления</a>
                                 <div class="dropdown-menu rounded-0 m-0">
@@ -135,7 +135,7 @@
                                 <div class="p-3" style="max-width: 700px;">
                                     <h4 class="text-light text-uppercase font-weight-medium mb-3">Снаряжение и экипировка</h4>
                                     <h3 class="display-4 text-white font-weight-semi-bold mb-4">По выгодным ценам</h3>
-                                    <a th:href="@{/products}" class="btn btn-light py-2 px-3">Купить</a>
+                                    <a th:href="@{/products/{pageNumber}(pageNumber=1)}" class="btn btn-light py-2 px-3">Купить</a>
                                 </div>
                             </div>
                         </div>
@@ -145,7 +145,7 @@
                                 <div class="p-3" style="max-width: 700px;">
                                     <h4 class="text-light text-uppercase font-weight-medium mb-3">Все объявления будут собраны здесь!</h4>
                                     <h3 class="display-4 text-white font-weight-semi-bold mb-4">Ищите всюду</h3>
-                                    <a th:href="@{/products}"  class="btn btn-light py-2 px-3">Купить</a>
+                                    <a th:href="@{/products/{pageNumber}(pageNumber=1)}" class="btn btn-light py-2 px-3">Купить</a>
                                 </div>
                             </div>
                         </div>
