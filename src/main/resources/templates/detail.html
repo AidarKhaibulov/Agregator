@@ -6,7 +6,7 @@
       xmlns:sec="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>Home</title>
+    <title th:text="${product.title}"></title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
@@ -153,12 +153,12 @@
 
 <!-- Page Header Start -->
 <div class="container-fluid bg-secondary mb-5">
-    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-        <h1 class="font-weight-semi-bold text-uppercase mb-3">Our Shop</h1>
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 200px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3" th:text="${product.title}"></h1>
         <div class="d-inline-flex">
-            <p class="m-0"><a href="">Home</a></p>
+            <p class="m-0"><a href="/">Главная</a></p>
             <p class="m-0 px-2">-</p>
-            <p class="m-0">Shop</p>
+            <p class="m-0"><a href="/products">Объявления</a></p>
         </div>
     </div>
 </div>
@@ -187,14 +187,15 @@
             </div>
 
             <div class="col-lg-7 pb-5">
-                <h3 th:text="${product.title}" class="font-weight-semi-bold"></h3>
-
                 <h3 th:text="${product.price}" class="font-weight-semi-bold mb-4"></h3>
                 <p th:text="${product.description}" class="mb-4"></p>
                 <div th:if="${!productsInCart.contains(product.getId())}">
                 <form  th:action="@{/addToFavorite/{productId}(productId=${product.id})}" method="post">
                     <button type="submit" name="add" class="btn btn-primary px-3"><i class="fa fa-heart mr-1"></i>В избранное</button>
                 </form>
+                </div>
+                <div th:unless="${!productsInCart.contains(product.getId())}">
+                    <button type="button"  class="btn btn-primary px-3"><i class="fa fa-heart mr-1"></i>Уже в избранном</button>
                 </div>
                 <div class="d-flex pt-2">
                     <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
@@ -448,7 +449,7 @@
 
 
 <!-- Back to Top -->
-<a th:href="@{/}"class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+<a href="#top"class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
 
 <!-- JavaScript Libraries -->

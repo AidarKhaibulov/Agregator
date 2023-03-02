@@ -12,6 +12,7 @@ import com.agregator.agr.services.UserService;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,7 +37,7 @@ public class ProductController {
 
     @GetMapping("/home")
     public String home() throws ClientException, ApiException {
-        VkApi vk= new VkApi(productService);
+        VkApi vk = new VkApi(productService);
         vk.getProducts(10);
         return "index";
     }
@@ -52,7 +53,7 @@ public class ProductController {
             user.getCart().getProducts().forEach(p -> productsInCart.add(p.getId()));
             model.addAttribute("user", user);
         }
-        model.addAttribute("productsInCart",productsInCart);
+        model.addAttribute("productsInCart", productsInCart);
         model.addAttribute("user", user);
         model.addAttribute("products", productList);
 
@@ -73,12 +74,10 @@ public class ProductController {
 
         String urls = productDto.getPhotoUrl();
         String[] photos = urls.split("\n");
-        for(String ph: photos)
-            System.out.println(ph);
         model.addAttribute("user", user);
-        model.addAttribute("productsInCart",productsInCart);
+        model.addAttribute("productsInCart", productsInCart);
         model.addAttribute("product", productDto);
-        model.addAttribute("photos",photos);
+        model.addAttribute("photos", photos);
         return "detail";
     }
 
@@ -142,20 +141,16 @@ public class ProductController {
     }
 
     @PostMapping("/addToFavorite/{productId}")
-    public String addToFavorite(@PathVariable("productId") Long productId) {
+    public String addToFavorite(@PathVariable("productId") Long productId, HttpServletRequest request) {
+        String referer = request.getHeader("Referer");
         String username = SecurityUtil.getSessionUser();
         UserEntity currentUser = userService.findByUsername(username);
         Cart currentCart = cartService.findCartByUser(currentUser);
         var currentProductList = currentCart.getProducts();
         Product product = productService.mapToProduct(productService.findProductById(productId));
-        if (currentProductList.contains(product)) {
-            return "redirect:/";
-        }
-        else {
-            currentProductList.add(product);
-            currentCart.setProducts(currentProductList);
-            cartService.updateCart(currentCart);
-            return "redirect:/";
-        }
+        currentProductList.add(product);
+        currentCart.setProducts(currentProductList);
+        cartService.updateCart(currentCart);
+        return "redirect:" + referer;
     }
 }

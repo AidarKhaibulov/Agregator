@@ -6,7 +6,7 @@
       xmlns:sec="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>Home</title>
+    <title>Объявления</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
@@ -155,12 +155,12 @@
 
 <!-- Page Header Start -->
 <div class="container-fluid bg-secondary mb-5">
-    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-        <h1 class="font-weight-semi-bold text-uppercase mb-3">Our Shop</h1>
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 200px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Объявления</h1>
         <div class="d-inline-flex">
-            <p class="m-0"><a href="">Home</a></p>
+            <p class="m-0"><a href="/">Главная</a></p>
             <p class="m-0 px-2">-</p>
-            <p class="m-0">Shop</p>
+            <p class="m-0">Объявления</p>
         </div>
     </div>
 </div>
@@ -336,6 +336,9 @@
                                     </button>
                                 </form>
                             </div>
+                            <div th:unless="${!productsInCart.contains(product.getId())}">
+                                <button type="submit" name="add"  class="btn btn-sm text-dark p-0"><i class="fas fa-heart text-primary mr-1"></i>Уже в избранном</button>
+                            </div>
                             <!--<a method="post" th:action="@{/addToFavorite/{productsId}(productId=${product.id})}" th:object="${product}" class="btn btn-sm text-dark p-0"><i class="fas fa-heart text-primary mr-1"></i>В
                                 избранное</a>-->
                         </div>
@@ -414,7 +417,7 @@
 
 
 <!-- Back to Top -->
-<a th:href="@{/}" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+<a href="#top" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
 
 <!-- JavaScript Libraries -->
