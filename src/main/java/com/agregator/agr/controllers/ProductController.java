@@ -4,11 +4,14 @@ import com.agregator.agr.api.VkApi;
 import com.agregator.agr.dto.ProductDto;
 import com.agregator.agr.models.Cart;
 import com.agregator.agr.models.Product;
+import com.agregator.agr.models.RecentlyWatchedProduct;
 import com.agregator.agr.models.UserEntity;
 import com.agregator.agr.security.SecurityUtil;
 import com.agregator.agr.services.CartService;
 import com.agregator.agr.services.ProductService;
+import com.agregator.agr.services.RecentlyWatchedProductService;
 import com.agregator.agr.services.UserService;
+import com.agregator.agr.services.impl.RecentlyWatchedProductServiceImpl;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,17 +23,21 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class ProductController {
     private ProductService productService;
     private UserService userService;
     private CartService cartService;
+    private RecentlyWatchedProductService recentlyWatchedProductService;
 
-    public ProductController(ProductService productService, UserService userService, CartService cartService) {
+    public ProductController(ProductService productService, UserService userService, CartService cartService,
+                             RecentlyWatchedProductService recentlyWatchedProductService) {
         this.productService = productService;
         this.userService = userService;
         this.cartService = cartService;
+        this.recentlyWatchedProductService = recentlyWatchedProductService;
     }
 
     @GetMapping("/home")
@@ -41,9 +48,9 @@ public class ProductController {
     }
 
     @GetMapping("/products/{pageNumber}")
-    public String listProducts(@PathVariable("pageNumber") int pageNumber,Model model) {
+    public String listProducts(@PathVariable("pageNumber") int pageNumber, Model model) {
         UserEntity user = new UserEntity();
-        List<ProductDto> productList = productService.findCertainNumberOfProductsStartFrom((pageNumber-1)*15,15);
+        List<ProductDto> productList = productService.findCertainNumberOfProductsStartFrom((pageNumber - 1) * 15, 15);
         String username = SecurityUtil.getSessionUser();
         List<Long> productsInCart = new ArrayList<>();
         if (username != null) {
@@ -67,8 +74,17 @@ public class ProductController {
             user = userService.findByUsername(username);
             user.getCart().getProducts().forEach(p -> productsInCart.add(p.getId()));
             model.addAttribute("user", user);
-        }
 
+            //Adding product to Recently watched
+            RecentlyWatchedProduct recentlyWatchedProductCart = recentlyWatchedProductService.findCartByUser(user);
+            var currentProductList = recentlyWatchedProductCart.getProducts();
+            Product currentProduct=productService.mapToProduct(productDto);
+            if (currentProductList.stream().noneMatch(product -> Objects.equals(product.getId(), currentProduct.getId()))){
+                currentProductList.add(productService.mapToProduct(productDto));
+                recentlyWatchedProductCart.setProducts(currentProductList);
+                recentlyWatchedProductService.updateCart(recentlyWatchedProductCart);
+            }
+        }
         String urls = productDto.getPhotoUrl();
         String[] photos = urls.split("\n");
         model.addAttribute("user", user);

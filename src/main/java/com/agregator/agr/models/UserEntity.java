@@ -30,4 +30,8 @@ public class UserEntity {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id", referencedColumnName = "id")
     private Cart cart;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "recently_watched_id", referencedColumnName = "id")
+    private RecentlyWatchedProduct recentlyWatchedProduct;
 }

@@ -1,10 +1,7 @@
 package com.agregator.agr.services.impl;
 
 import com.agregator.agr.dto.RegistrationDto;
-import com.agregator.agr.models.Cart;
-import com.agregator.agr.models.Product;
-import com.agregator.agr.models.Role;
-import com.agregator.agr.models.UserEntity;
+import com.agregator.agr.models.*;
 import com.agregator.agr.repositories.CartRepository;
 import com.agregator.agr.repositories.RoleRepository;
 import com.agregator.agr.repositories.UserRepository;
@@ -39,6 +36,8 @@ public class UserServiceImpl implements UserService {
         user.setRoles(Arrays.asList(role));
         Cart cart = new Cart();
         user.setCart(cart);
+        RecentlyWatchedProduct recentlyWatchedProductCart = new RecentlyWatchedProduct();
+        user.setRecentlyWatchedProduct(recentlyWatchedProductCart);
         userRepository.save(user);
     }
 
