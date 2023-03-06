@@ -107,7 +107,10 @@ public class ProductController {
         model.addAttribute("products", products);
         return "shop";
     }
-
+    @GetMapping("/cart")
+    public String cart(Model model){
+        return "cart";
+    }
     @GetMapping("/newProduct")
     public String createProduct(Model model) {
         Product product = new Product();

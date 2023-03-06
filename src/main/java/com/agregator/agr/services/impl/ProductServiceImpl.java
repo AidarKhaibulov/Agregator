@@ -37,7 +37,7 @@ public class ProductServiceImpl implements ProductService {
         String username = SecurityUtil.getSessionUser();
         UserEntity user= userRepository.findByUsername(username);
         Product product= mapToProduct(productDto);
-        product.setCreatedBy(user);
+        //product.setCreatedBy(user);
         return productRepository.save(product);
     }
 
