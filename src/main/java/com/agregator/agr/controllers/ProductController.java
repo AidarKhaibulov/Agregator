@@ -109,6 +109,16 @@ public class ProductController {
     }
     @GetMapping("/cart")
     public String cart(Model model){
+        UserEntity user = new UserEntity();
+        String username = SecurityUtil.getSessionUser();
+        List<Product> productsInCart = new ArrayList<>();
+        if (username != null) {
+            user = userService.findByUsername(username);
+            user.getCart().getProducts().forEach(p -> productsInCart.add(p));
+            model.addAttribute("user", user);
+        }
+        model.addAttribute("productsInCart", productsInCart);
+        model.addAttribute("user", user);
         return "cart";
     }
     @GetMapping("/newProduct")
@@ -167,6 +177,22 @@ public class ProductController {
         currentProductList.add(product);
         currentCart.setProducts(currentProductList);
         cartService.updateCart(currentCart);
+        return "redirect:" + referer;
+    }
+    @PostMapping("/deleteFromFavorite/{productId}")
+    public String deleteFromFavorite(@PathVariable("productId") Long productId, HttpServletRequest request) {
+        String referer = request.getHeader("Referer");
+        String username = SecurityUtil.getSessionUser();
+        UserEntity currentUser = userService.findByUsername(username);
+        Cart currentCart = cartService.findCartByUser(currentUser);
+        var currentProductList = currentCart.getProducts();
+        int i=0;
+        while(!currentProductList.get(i).getId().equals(productId))
+            i++;
+        currentProductList.remove(i);
+        currentCart.setProducts(currentProductList);
+        cartService.updateCart(currentCart);
+        System.out.println("deleted");
         return "redirect:" + referer;
     }
 }

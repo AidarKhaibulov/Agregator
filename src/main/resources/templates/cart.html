@@ -169,11 +169,16 @@
     <div class="row px-xl-5">
         <div class="col-lg-8 table-responsive mb-5">
             <table class="table table-bordered text-center mb-0">
-                <tbody class="align-middle">
+                <tbody th:each="product :${productsInCart}" class="align-middle">
                 <tr>
-                    <td class="align-middle"><img src="img/product-1.jpg" alt="" style="width: 50px;"> Colorful Stylish Shirt</td>
-                    <td class="align-middle">$150</td>
-                    <td class="align-middle"><button class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
+                    <td class="align-middle" ><img th:src="${product.photoUrl}" alt="" style="width: 50px;" th:text="${product.title}"></td>
+                    <td th:text="${product.price}" class="align-middle"></td>
+
+                        <form th:action="@{/deleteFromFavorite/{productId}(productId=${product.id})}" method="post">
+                            <td class="align-middle"><button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
+                        </form>
+
+
                 </tbody>
             </table>
 
