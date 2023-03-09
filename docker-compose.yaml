@@ -1,12 +1,34 @@
-version: '3'
+version: '3.8'
 
 services:
   postgres:
-    image: 'postgres:13'
-    container_name: 'java-postgres'
+    build:
+      context: services/postgres
+      dockerfile: Dockerfile.development
     ports:
-      - 5432:5432
+      - "5434:5432"
     environment:
-      - 'POSTGRES_USER=sa'
-      - 'POSTGRES_HOST_AUTH_METHOD=trust'
-      - 'POSTGRES_DB=java'
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=agregator
+      - POSTGRES_PASSWORD=sitis
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+
+
+  app:
+    build:
+      context: services/app
+      dockerfile: Dockerfile.development
+    command: java -jar ./app.jar
+    environment:
+      - PORT=8080
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres/agregator
+    image: 'agregator-app'
+    ports:
+      - 8091:8080
+    depends_on:
+      - postgres
+
+
+volumes:
+  db-data:
