@@ -12,6 +12,7 @@
 	<artifactId>agr</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>agr</name>
+	<packaging>jar</packaging>
 	<description>Web MVC project</description>
 	<properties>
 		<java.version>19</java.version>
@@ -129,18 +130,7 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>${maven-jar-plugin.version}</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>com.agregator.agr.AgrApplication</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
+
 		</plugins>
 	</build>
 
