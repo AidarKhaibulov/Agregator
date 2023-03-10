@@ -3,8 +3,7 @@ version: '3.8'
 services:
   postgres:
     build:
-      context: services/postgres
-      dockerfile: Dockerfile.development
+      dockerfile: Dockerfile
     ports:
       - "5434:5432"
     environment:
@@ -18,7 +17,7 @@ services:
   app:
     build:
       context: services/app
-      dockerfile: Dockerfile.development
+      dockerfile: Dockerfile
     command: java -jar ./app.jar
     environment:
       - PORT=8080
