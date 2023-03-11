@@ -1,28 +1,28 @@
 package com.agregator.agr.services.impl;
 
 import com.agregator.agr.dto.RegistrationDto;
-import com.agregator.agr.models.*;
-import com.agregator.agr.repositories.CartRepository;
+import com.agregator.agr.models.Cart;
+import com.agregator.agr.models.RecentlyWatchedProduct;
+import com.agregator.agr.models.Role;
+import com.agregator.agr.models.UserEntity;
 import com.agregator.agr.repositories.RoleRepository;
 import com.agregator.agr.repositories.UserRepository;
-import com.agregator.agr.security.SecurityUtil;
 import com.agregator.agr.services.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
+import java.util.Collections;
+
 @Service
 public class UserServiceImpl implements UserService {
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
-    private CartRepository cartRepository;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
-                           PasswordEncoder passwordEncoder,CartRepository cartRepository) {
+                           PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.cartRepository=cartRepository;
         this.passwordEncoder=passwordEncoder;
     }
 
@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(registrationDto.getEmail());
         user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
         Role role= roleRepository.findByName("user");
-        user.setRoles(Arrays.asList(role));
+        user.setRoles(Collections.singletonList(role));
         Cart cart = new Cart();
         user.setCart(cart);
         RecentlyWatchedProduct recentlyWatchedProductCart = new RecentlyWatchedProduct();

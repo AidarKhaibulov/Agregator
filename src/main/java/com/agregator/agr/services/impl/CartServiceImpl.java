@@ -1,10 +1,8 @@
 package com.agregator.agr.services.impl;
 
 import com.agregator.agr.models.Cart;
-import com.agregator.agr.models.Product;
 import com.agregator.agr.models.UserEntity;
 import com.agregator.agr.repositories.CartRepository;
-import com.agregator.agr.security.SecurityUtil;
 import com.agregator.agr.services.CartService;
 import org.springframework.stereotype.Service;
 
@@ -23,14 +21,12 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart findCartById(long cartId) {
-        Cart cart=cartRepository.findById(cartId).get();
-        return cart;
+        return cartRepository.findById(cartId).get();
     }
 
     @Override
     public Cart findCartByUser(UserEntity user) {
-        Cart cart= cartRepository.findByUser(user);
-        return cart;
+        return cartRepository.findByUser(user);
     }
 
     @Override

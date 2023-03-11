@@ -1,15 +1,10 @@
 package com.agregator.agr.controllers;
 
 import com.agregator.agr.dto.RegistrationDto;
-import com.agregator.agr.models.Cart;
 import com.agregator.agr.models.UserEntity;
-import com.agregator.agr.services.CartService;
 import com.agregator.agr.services.UserService;
 import jakarta.validation.Valid;
-import org.apache.catalina.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class AuthController {
-    private UserService userService;
+    private final UserService userService;
 
     public AuthController(UserService userService) {
 

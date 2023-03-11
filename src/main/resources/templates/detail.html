@@ -2,7 +2,6 @@
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
@@ -130,7 +129,7 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a th:href="@{/products/1}" class="nav-item nav-link active">Объявления</a>
+                        <a th:href="@{/products/{pageNumber}/{sortMethod}(sortMethod='date',pageNumber=1)}" class="nav-item nav-link active">Объявления</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Мои объявления</a>
                             <div class="dropdown-menu rounded-0 m-0">
@@ -158,7 +157,7 @@
         <div class="d-inline-flex">
             <p class="m-0"><a href="/">Главная</a></p>
             <p class="m-0 px-2">-</p>
-            <p  class="m-0"><a th:href="@{/products/1}">Объявления</a></p>
+            <p  class="m-0"><a th:href="@{/products/{pageNumber}/{sortMethod}(sortMethod='date',pageNumber=1)}">Объявления</a></p>
         </div>
     </div>
 </div>

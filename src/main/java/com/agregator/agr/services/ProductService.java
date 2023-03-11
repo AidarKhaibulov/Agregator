@@ -9,7 +9,7 @@ import java.util.List;
 public interface ProductService {
     List<ProductDto> findAllProducts(Pageable pageable);
 
-    Product saveProduct(ProductDto product);
+    void saveProduct(ProductDto product);
 
     ProductDto findProductById(long productId);
 

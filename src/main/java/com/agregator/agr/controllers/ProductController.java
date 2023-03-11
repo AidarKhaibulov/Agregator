@@ -29,10 +29,10 @@ import java.util.Objects;
 
 @Controller
 public class ProductController {
-    private ProductService productService;
-    private UserService userService;
-    private CartService cartService;
-    private RecentlyWatchedProductService recentlyWatchedProductService;
+    private final ProductService productService;
+    private final UserService userService;
+    private final CartService cartService;
+    private final RecentlyWatchedProductService recentlyWatchedProductService;
 
     public ProductController(ProductService productService, UserService userService, CartService cartService, RecentlyWatchedProductService recentlyWatchedProductService) {
         this.productService = productService;
@@ -48,7 +48,7 @@ public class ProductController {
         List<Product> productsInCart = new ArrayList<>();
         if (username != null) {
             user = userService.findByUsername(username);
-            user.getCart().getProducts().forEach(p -> productsInCart.add(p));
+            productsInCart.addAll(user.getCart().getProducts());
             model.addAttribute("user", user);
         }
         model.addAttribute("amountOfProductsInCart", productsInCart.size());
@@ -70,22 +70,13 @@ public class ProductController {
         UserEntity user = new UserEntity();
         Pageable currentPage;
         System.out.println(sortMethod);
-        switch (sortMethod) {
-            case "price":
-                currentPage = PageRequest.of(pageNumber - 1, countOfProductOnPage, Sort.by("price"));
-                break;
-            case "priceReversed":
-                currentPage = PageRequest.of(pageNumber - 1, countOfProductOnPage, Sort.by("price").descending());
-                break;
-            case "date":
-                currentPage = PageRequest.of(pageNumber - 1, countOfProductOnPage, Sort.by("createdOn").descending());
-                break;
-            case "dateReversed":
-                currentPage = PageRequest.of(pageNumber - 1, countOfProductOnPage, Sort.by("createdOn"));
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + sortMethod);
-        }
+        currentPage = switch (sortMethod) {
+            case "price" -> PageRequest.of(pageNumber - 1, countOfProductOnPage, Sort.by("price"));
+            case "priceReversed" -> PageRequest.of(pageNumber - 1, countOfProductOnPage, Sort.by("price").descending());
+            case "date" -> PageRequest.of(pageNumber - 1, countOfProductOnPage, Sort.by("createdOn").descending());
+            case "dateReversed" -> PageRequest.of(pageNumber - 1, countOfProductOnPage, Sort.by("createdOn"));
+            default -> throw new IllegalStateException("Unexpected value: " + sortMethod);
+        };
         List<ProductDto> productsToReturn = productService.findAllProducts(currentPage);
         String username = SecurityUtil.getSessionUser();
         List<Long> productsInCart = new ArrayList<>();
@@ -152,7 +143,7 @@ public class ProductController {
         List<Product> productsInCart = new ArrayList<>();
         if (username != null) {
             user = userService.findByUsername(username);
-            user.getCart().getProducts().forEach(p -> productsInCart.add(p));
+            productsInCart.addAll(user.getCart().getProducts());
             model.addAttribute("user", user);
         }
         model.addAttribute("productsInCart", productsInCart);

@@ -19,9 +19,9 @@ import static com.agregator.agr.AgrApplication.VK_APP_TOKEN;
 public class VkApi {
     private static final int userId = 161781103;
     private static final String accessToken = VK_APP_TOKEN;
-    private UserActor actor;
-    private VkApiClient vk;
-    private ProductService productService;
+    private final UserActor actor;
+    private final VkApiClient vk;
+    private final ProductService productService;
 
     public VkApi(ProductService productService) {
         TransportClient transportClient = new HttpTransportClient();
@@ -53,7 +53,7 @@ public class VkApi {
                 Set<String> tags = new HashSet<>();
                 for (String match : allMatches)
                     if (!tags.contains(match.toLowerCase())) {
-                        title.append(" " + match.toLowerCase());
+                        title.append(" ").append(match.toLowerCase());
                         tags.add(match.toLowerCase());
                     }
                 product.setTitle(String.valueOf(title));
@@ -61,9 +61,9 @@ public class VkApi {
                 product.setPlatform(author);
                 StringBuilder urls = new StringBuilder();
                 for (var attachment : post.getAttachments())
-                    if (attachment.getType().toString() == "photo") {
+                    if (attachment.getType().toString().equals("photo")) {
                         System.out.println(attachment.getPhoto().getSizes().get(3).getUrl());
-                        urls.append(("\n" + attachment.getPhoto().getSizes().get(3).getUrl()));
+                        urls.append("\n").append(attachment.getPhoto().getSizes().get(3).getUrl());
                     }
                 urls.deleteCharAt(0);
                 product.setPhotoUrl(String.valueOf(urls));

@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-    private ProductRepository productRepository;
-    private UserRepository userRepository;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
     public ProductServiceImpl(ProductRepository productRepository, UserRepository userRepository){
         this.productRepository=productRepository;
         this.userRepository=userRepository;
@@ -25,16 +25,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> findAllProducts(Pageable pageable) {
         Page<Product> products=productRepository.findAll(pageable);
-        return products.stream().map((product) -> mapToProductDto(product)).collect(Collectors.toList());
+        return products.stream().map(this::mapToProductDto).collect(Collectors.toList());
     }
 
     @Override
-    public Product saveProduct(ProductDto productDto) {
-        String username = SecurityUtil.getSessionUser();
-        UserEntity user= userRepository.findByUsername(username);
+    public void saveProduct(ProductDto productDto) {
         Product product= mapToProduct(productDto);
-        //product.setCreatedBy(user);
-        return productRepository.save(product);
+        productRepository.save(product);
     }
 
     @Override
@@ -60,17 +57,17 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDto> searchProducts(String query) {
         List<Product> products=productRepository.searchProducts(query);
-        return products.stream().map(product -> mapToProductDto(product)).collect(Collectors.toList());
+        return products.stream().map(this::mapToProductDto).collect(Collectors.toList());
     }
 
     @Override
     public List<ProductDto> searchProductsByCategory(String query) {
         List<Product> products=productRepository.searchProductsByCategory(query);
-        return products.stream().map(product -> mapToProductDto(product)).collect(Collectors.toList());
+        return products.stream().map(this::mapToProductDto).collect(Collectors.toList());
     }
     @Override
     public Product mapToProduct(ProductDto product){
-        Product productDto=Product.builder()
+        return Product.builder()
                 .id(product.getId())
                 .title(product.getTitle())
                 .photoUrl(product.getPhotoUrl())
@@ -82,23 +79,21 @@ public class ProductServiceImpl implements ProductService {
                 .updatedOn(product.getUpdatedOn())
                 .description(product.getDescription())
                 .build();
-        return productDto;
     }
 @Override
     public ProductDto mapToProductDto(Product product) {
-        ProductDto productDto=ProductDto.builder()
-                .id(product.getId())
-                .title(product.getTitle())
-                .photoUrl(product.getPhotoUrl())
-                .platform(product.getPlatform())
-                .price(product.getPrice())
-                .size(product.getSize())
-                .createdBy(product.getCreatedBy())
-                .createdOn(product.getCreatedOn())
-                .updatedOn(product.getUpdatedOn())
-                .description(product.getDescription())
-                .build();
-        return productDto;
+    return ProductDto.builder()
+            .id(product.getId())
+            .title(product.getTitle())
+            .photoUrl(product.getPhotoUrl())
+            .platform(product.getPlatform())
+            .price(product.getPrice())
+            .size(product.getSize())
+            .createdBy(product.getCreatedBy())
+            .createdOn(product.getCreatedOn())
+            .updatedOn(product.getUpdatedOn())
+            .description(product.getDescription())
+            .build();
     }
 
 }

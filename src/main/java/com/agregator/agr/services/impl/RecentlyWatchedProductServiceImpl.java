@@ -1,9 +1,7 @@
 package com.agregator.agr.services.impl;
 
-import com.agregator.agr.models.Cart;
 import com.agregator.agr.models.RecentlyWatchedProduct;
 import com.agregator.agr.models.UserEntity;
-import com.agregator.agr.repositories.CartRepository;
 import com.agregator.agr.repositories.RecentlyWatchedProductRepository;
 import com.agregator.agr.services.RecentlyWatchedProductService;
 import org.springframework.stereotype.Service;
@@ -21,14 +19,12 @@ public class RecentlyWatchedProductServiceImpl implements RecentlyWatchedProduct
 
     @Override
     public RecentlyWatchedProduct findCartById(long cartId) {
-        RecentlyWatchedProduct cart=recentlyWatchedProductRepository.findById(cartId).get();
-        return cart;
+        return recentlyWatchedProductRepository.findById(cartId).get();
     }
 
     @Override
     public RecentlyWatchedProduct findCartByUser(UserEntity user) {
-        RecentlyWatchedProduct cart= recentlyWatchedProductRepository.findByUser(user);
-        return cart;
+        return recentlyWatchedProductRepository.findByUser(user);
     }
 
     @Override
