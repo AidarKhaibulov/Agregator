@@ -1,0 +1,5 @@
+server:
+  port: ${PORT:8091}
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/agregator}

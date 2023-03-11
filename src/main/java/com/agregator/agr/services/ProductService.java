@@ -2,13 +2,12 @@ package com.agregator.agr.services;
 
 import com.agregator.agr.dto.ProductDto;
 import com.agregator.agr.models.Product;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface ProductService {
-    List<ProductDto> findAllProducts();
-
-    List<ProductDto> findCertainNumberOfProductsStartFrom(int start, int end);
+    List<ProductDto> findAllProducts(Pageable pageable);
 
     Product saveProduct(ProductDto product);
 

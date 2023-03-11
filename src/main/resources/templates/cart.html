@@ -67,13 +67,6 @@
                 </div>
             </form>
         </div>
-        <div class="col-lg-3 col-6 text-right">
-            <a href="" class="btn border">
-                <i class="fas fa-heart text-primary"></i>
-                <span class="badge">0</span>
-            </a>
-
-        </div>
     </div>
 </div>
 <!-- Topbar End -->
@@ -130,7 +123,7 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a th:href="@{/products}" class="nav-item nav-link active">Объявления</a>
+                        <a th:href="@{/products/1}" class="nav-item nav-link active">Объявления</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Мои объявления</a>
                             <div class="dropdown-menu rounded-0 m-0">
@@ -158,7 +151,7 @@
         <div class="d-inline-flex">
             <p class="m-0"><a href="/">Главная</a></p>
             <p class="m-0 px-2">-</p>
-            <p class="m-0"><a href="/products">Объявления</a></p>
+            <p  class="m-0"><a th:href="@{/products/1}">Объявления</a></p>
         </div>
     </div>
 </div>

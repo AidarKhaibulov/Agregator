@@ -3,7 +3,8 @@ version: '3.8'
 services:
   postgres:
     build:
-      dockerfile: Dockerfile
+      context: services/postgres
+      dockerfile: services/postgres/Dockerfile.development
     ports:
       - "5434:5432"
     environment:
@@ -17,12 +18,12 @@ services:
   app:
     build:
       context: services/app
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.development
     command: java -jar ./app.jar
     environment:
       - PORT=8080
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres/agregator
-    image: 'agregator-app'
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/agregator
+    image: 'aidar228/agregator-app'
     ports:
       - 8091:8080
     depends_on:

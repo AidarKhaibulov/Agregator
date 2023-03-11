@@ -14,9 +14,11 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.agregator.agr.AgrApplication.VK_APP_TOKEN;
+
 public class VkApi {
     private static final int userId = 161781103;
-    private static final String accessToken = "10192d4f10192d4f10192d4f72130beab81101910192d4f73ecf7ee6ad42fefd061f1f6";
+    private static final String accessToken = VK_APP_TOKEN;
     private UserActor actor;
     private VkApiClient vk;
     private ProductService productService;

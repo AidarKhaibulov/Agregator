@@ -7,6 +7,8 @@ import com.agregator.agr.repositories.ProductRepository;
 import com.agregator.agr.repositories.UserRepository;
 import com.agregator.agr.security.SecurityUtil;
 import com.agregator.agr.services.ProductService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,14 +23,8 @@ public class ProductServiceImpl implements ProductService {
         this.userRepository=userRepository;
     }
     @Override
-    public List<ProductDto> findAllProducts() {
-        List<Product> products=productRepository.findAll();
-        return products.stream().map((product) -> mapToProductDto(product)).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ProductDto> findCertainNumberOfProductsStartFrom(int start, int end) {
-        List<Product> products=productRepository.findCertainNumberOfProductsStartFrom(start, end);
+    public List<ProductDto> findAllProducts(Pageable pageable) {
+        Page<Product> products=productRepository.findAll(pageable);
         return products.stream().map((product) -> mapToProductDto(product)).collect(Collectors.toList());
     }
 
