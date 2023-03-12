@@ -13,7 +13,4 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select p from Product p join Category c on c.id = p.category.id where c.name like concat('%',:query,'%')")
     List<Product> searchProductsByCategory(String query);
 
-    @Query(value = "SELECT * FROM products p ORDER BY p.id LIMIT ?2 OFFSET ?1",nativeQuery = true)
-    List<Product> findCertainNumberOfProductsStartFrom(int start, int end);
-
 }
