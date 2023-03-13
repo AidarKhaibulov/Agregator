@@ -9,6 +9,8 @@ import java.util.List;
 public interface ProductService {
     List<ProductDto> findAllProducts(Pageable pageable);
 
+    Product findProductByPhotoUrl(String photoUrl);
+
     void saveProduct(ProductDto product);
 
     ProductDto findProductById(long productId);
@@ -25,4 +27,6 @@ public interface ProductService {
 
     ProductDto mapToProductDto(Product product);
 
+
+    Product findProductByPlatform(String platform);
 }

@@ -13,4 +13,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select p from Product p join Category c on c.id = p.category.id where c.name like concat('%',:query,'%')")
     List<Product> searchProductsByCategory(String query);
 
+    Product findProductByPhotoUrl(String photoUrl);
+    Product findProductByPlatform(String platform);
+
 }

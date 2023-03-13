@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 
 import static com.agregator.agr.AgrApplication.VK_APP_TOKEN;
 
-public class VkApi {
+public final class VkApi {
     private static final int userId = 161781103;
     private static final String accessToken = VK_APP_TOKEN;
     private final UserActor actor;
@@ -31,7 +31,7 @@ public class VkApi {
     }
 
     public void getProducts(int productsAmount) throws ClientException, ApiException {
-        String addsFiterRegex = "(ПРИМЕЧАНИЕ ОТ АДМИНИСТРАЦИИ)|([П|п]роверенный [П|п]родавец)|" +
+        String addsFilterRegex = "(ПРИМЕЧАНИЕ ОТ АДМИНИСТРАЦИИ)|([П|п]роверенный [П|п]родавец)|" +
                 "(списке проверенных продавцов под номером)";
         String productsTagsRegex = "([Б|б]отинки)|([К|к]россовки)|([К|к]уртка)|([S|s]oft[S|s]hell)|([К|к]арабины)|" +
                 "([с|С]пальный мешок)|([П|п]уховик)|([Р|р]юкзак)|([П|п]алатка)|([Т|т]ермобель[ё|е])";
@@ -44,7 +44,7 @@ public class VkApi {
             StringBuilder title = new StringBuilder("Объявление VK");
 
             if (post.getSignerId() != null) author = "https://vk.com/id" + post.getSignerId();
-            Pattern pattern = Pattern.compile(addsFiterRegex);
+            Pattern pattern = Pattern.compile(addsFilterRegex);
             Matcher allowedPosts = pattern.matcher(text);
             if (allowedPosts.find()) {
                 List<String> allMatches = new ArrayList<>();
@@ -67,7 +67,13 @@ public class VkApi {
                     }
                 urls.deleteCharAt(0);
                 product.setPhotoUrl(String.valueOf(urls));
-                productService.saveProduct(productService.mapToProductDto(product));
+                if(productService.findProductByPhotoUrl(String.valueOf(urls))==null) {
+                    System.out.println("added!");
+                    productService.saveProduct(productService.mapToProductDto(product));
+                }
+                else{
+                    System.out.println("not added");
+                }
             }
         }
     }

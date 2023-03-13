@@ -1,5 +1,6 @@
 package com.agregator.agr.controllers;
 
+import com.agregator.agr.api.AvitoApi;
 import com.agregator.agr.api.VkApi;
 import com.agregator.agr.dto.ProductDto;
 import com.agregator.agr.models.Cart;
@@ -23,16 +24,21 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Controller
 public class ProductController {
-    private final ProductService productService;
+    private static ProductService productService = null;
     private final UserService userService;
     private final CartService cartService;
     private final RecentlyWatchedProductService recentlyWatchedProductService;
+
+    public static ProductService getProductService() {
+        return productService;
+    }
 
     public ProductController(ProductService productService, UserService userService, CartService cartService, RecentlyWatchedProductService recentlyWatchedProductService) {
         this.productService = productService;
@@ -57,9 +63,9 @@ public class ProductController {
     }
 
     @GetMapping("/home")
-    public String home() throws ClientException, ApiException {
-        VkApi vk = new VkApi(productService);
-        vk.getProducts(10);
+    public String home() throws ClientException, ApiException, IOException, InterruptedException {
+        AvitoApi avitoApi= new AvitoApi();
+        avitoApi.getProducts("kazan","лыжи");
         return "index";
     }
 

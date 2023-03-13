@@ -29,6 +29,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product findProductByPhotoUrl(String photoUrl) {
+        return productRepository.findProductByPhotoUrl(photoUrl);
+    }
+
+    @Override
     public void saveProduct(ProductDto productDto) {
         Product product= mapToProduct(productDto);
         productRepository.save(product);
@@ -94,6 +99,11 @@ public class ProductServiceImpl implements ProductService {
             .updatedOn(product.getUpdatedOn())
             .description(product.getDescription())
             .build();
+    }
+
+    @Override
+    public Product findProductByPlatform(String platform) {
+        return productRepository.findProductByPlatform(platform);
     }
 
 }
