@@ -1,7 +1,6 @@
 package com.agregator.agr.controllers;
 
 import com.agregator.agr.api.AvitoApi;
-import com.agregator.agr.api.VkApi;
 import com.agregator.agr.dto.ProductDto;
 import com.agregator.agr.models.Cart;
 import com.agregator.agr.models.Product;
@@ -12,8 +11,6 @@ import com.agregator.agr.services.CartService;
 import com.agregator.agr.services.ProductService;
 import com.agregator.agr.services.RecentlyWatchedProductService;
 import com.agregator.agr.services.UserService;
-import com.vk.api.sdk.exceptions.ApiException;
-import com.vk.api.sdk.exceptions.ClientException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
@@ -41,7 +38,7 @@ public class ProductController {
     }
 
     public ProductController(ProductService productService, UserService userService, CartService cartService, RecentlyWatchedProductService recentlyWatchedProductService) {
-        this.productService = productService;
+        ProductController.productService = productService;
         this.userService = userService;
         this.cartService = cartService;
         this.recentlyWatchedProductService = recentlyWatchedProductService;
@@ -63,7 +60,7 @@ public class ProductController {
     }
 
     @GetMapping("/home")
-    public String home() throws ClientException, ApiException, IOException, InterruptedException {
+    public String home() throws IOException, InterruptedException {
         AvitoApi avitoApi= new AvitoApi();
         avitoApi.getProducts("kazan","лыжи");
         return "index";
@@ -131,6 +128,20 @@ public class ProductController {
     @GetMapping("/products/search")
     public String searchProduct(@RequestParam(value = "query") String query, Model model) {
         List<ProductDto> products = productService.searchProducts(query);
+
+        UserEntity user = new UserEntity();
+        String username = SecurityUtil.getSessionUser();
+        List<Long> productsInCart = new ArrayList<>();
+        if (username != null) {
+            user = userService.findByUsername(username);
+            user.getCart().getProducts().forEach(p -> productsInCart.add(p.getId()));
+            model.addAttribute("user", user);
+        }
+
+        model.addAttribute("productsInCart", productsInCart);
+        model.addAttribute("user", user);
+        model.addAttribute("method", "data");
+
         model.addAttribute("products", products);
         return "shop";
     }

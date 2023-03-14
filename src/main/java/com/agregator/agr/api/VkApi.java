@@ -40,10 +40,8 @@ public final class VkApi {
         for (var post : wallPosts) {
             Product product = new Product();
             String text = post.getText();
-            String author = "";
+            String platform = "https://vk.com/place_for_tourist?w=wall"+post.getOwnerId()+"_"+post.getId();
             StringBuilder title = new StringBuilder("Объявление VK");
-
-            if (post.getSignerId() != null) author = "https://vk.com/id" + post.getSignerId();
             Pattern pattern = Pattern.compile(addsFilterRegex);
             Matcher allowedPosts = pattern.matcher(text);
             if (allowedPosts.find()) {
@@ -58,7 +56,7 @@ public final class VkApi {
                     }
                 product.setTitle(String.valueOf(title));
                 product.setDescription(text);
-                product.setPlatform(author);
+                product.setPlatform(platform);
                 StringBuilder urls = new StringBuilder();
                 for (var attachment : post.getAttachments())
                     if (attachment.getType().toString().equals("photo")) {
@@ -67,6 +65,7 @@ public final class VkApi {
                     }
                 urls.deleteCharAt(0);
                 product.setPhotoUrl(String.valueOf(urls));
+                product.setPrice(0.0);
                 if(productService.findProductByPhotoUrl(String.valueOf(urls))==null) {
                     System.out.println("added!");
                     productService.saveProduct(productService.mapToProductDto(product));
