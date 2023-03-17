@@ -11,7 +11,7 @@ interface that allows users to search desirable products and filter them.
  - Avito parsing via Jsoup
  - Vk parsing via VkApi
  - Removing ads while parsing Vk
- - Convenient ECommerce-like service with abilities to search specified product, add them to favorites, filter by price, date et c.
+ - Convenient ECommerce-like service with abilities to search specified product, add products to favorites, filter by price, date et c.
 
 # Technologies
  - Java 19
