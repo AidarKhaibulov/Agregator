@@ -1,16 +1,16 @@
 version: '3.8'
-
 services:
   postgres:
     build:
       context: services/postgres
       dockerfile: Dockerfile
+    environment:
+      POSTGRES_USER: ${PDB_UN}
+      POSTGRES_DB: agregator
+      POSTGRES_PASSWORD: ${PDB_PW}
     ports:
       - "5434:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=agregator
-      - POSTGRES_PASSWORD=sitis
+
     volumes:
       - "db-data:/var/lib/postgresql/data"
 
@@ -22,9 +22,9 @@ services:
     environment:
       - PORT=8080
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/agregator
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=sitis
-    image: 'aidar228/agr'
+      - SPRING_DATASOURCE_USERNAME=${PDB_UN}
+      - SPRING_DATASOURCE_PASSWORD=${PDB_PW}
+    image: 'agreg'
     ports:
       - 8091:8080
     depends_on:
