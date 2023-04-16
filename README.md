@@ -34,11 +34,18 @@ interface that allows users to search desirable products and filter them.
 
 
 ## How to use (via docker)
-Download .zip file with code, extract it and change directory to the root:
+Download .zip file with code, extract it, change directory to the root:
 ```bash
 cd Agregator-master/Agregator-master
 ```
-Run docker-compose.yml:
+And create in root directory .env file with the following demo-credentials:
+```text
+PDB_UN=postgres
+PDB_PW=sitis
+```
+
+
+Then run docker-compose.yml:
 ```bash
 docker-compose up
 ```
