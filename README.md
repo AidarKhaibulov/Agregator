@@ -10,12 +10,12 @@ interface that allows users to search desirable products and filter them.
 - Logout mechanism
 - Avito parsing via Jsoup, finding announcements by cities and title
 - Vk parsing via VkApi
-- Removing ads posts while parsing Vk and authomatically addiing keywords
+- Removing ads posts while parsing Vk and automatically adding keywords
 - Convenient ECommerce-like service with abilities to search specified product, add products to favorites, filter by price, date et c.
+- Recently watched products
 - Spring pagination&sorting
 - Bean validation
 - Using DTO layer
-- Using JPA Repository based service layer
 
 ## Technologies
 - Java 19
@@ -49,7 +49,9 @@ Then run docker-compose.yml:
 ```bash
 docker-compose up
 ```
-Now application is available on **localhost:8091**
+Now application is available on **http://localhost:8091/**
+
+![img.png](img.png)
 
 ## Contributing
 

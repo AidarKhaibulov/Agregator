@@ -1,6 +1,7 @@
 package com.agregator.agr;
 import java.io.*;
 
+import com.agregator.agr.api.AvitoApi;
 import com.agregator.agr.api.VkApi;
 import com.agregator.agr.controllers.ProductController;
 import com.agregator.agr.services.ProductService;
@@ -23,9 +24,42 @@ public class AgrApplication {
 
 		SpringApplication.run(AgrApplication.class, args);
 
-		ProductService productService= ProductController.getProductService();
-		VkApi vk = new VkApi(productService);
-		vk.getProducts(10);
+
+		// Vk async parsing
+		Thread vkParsingProducts = new Thread(() -> {
+			while(true) {
+				ProductService productService = ProductController.getProductService();
+				VkApi vk = new VkApi(productService);
+				try {
+					vk.getProducts(10);
+				} catch (ClientException e) {
+					throw new RuntimeException(e);
+				} catch (ApiException e) {
+					throw new RuntimeException(e);
+				}
+				try {
+					Thread.sleep(20000);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		});
+
+		// Avito async parsing
+		Thread avitoParsingProducts = new Thread(() -> {
+			AvitoApi avitoApi= new AvitoApi();
+			try {
+				avitoApi.getProducts("kazan","лыжи");
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		});
+
+		vkParsingProducts.start();
+		avitoParsingProducts.start();
+
 	}
 
 }

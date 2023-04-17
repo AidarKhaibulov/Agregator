@@ -33,3 +33,4 @@ build/
 .vscode/
 /src/main/resources/db.txt
 /src/main/resources/vk.txt
+.env

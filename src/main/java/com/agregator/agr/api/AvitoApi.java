@@ -12,10 +12,11 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 
 public final class AvitoApi {
+    private final ProductService productService = ProductController.getProductService();
+
     public AvitoApi() {
     }
 
-    private final ProductService productService= ProductController.getProductService();
     public void getProducts(String city, String desiredProduct) throws IOException, InterruptedException {
         Product product = new Product();
 
@@ -25,11 +26,11 @@ public final class AvitoApi {
 
         for (var el : pag) {
             i++;
-            if (i == 20)
+            if (i == 10)
                 break;
 
             //link
-            String platform="https://www.avito.ru" + el.attributes().asList().get(0).getValue();
+            String platform = "https://www.avito.ru" + el.attributes().asList().get(0).getValue();
             product.setPlatform(platform);
             System.out.println(platform);
             doc = Jsoup.connect(platform).get();
@@ -41,7 +42,7 @@ public final class AvitoApi {
 
             //description
             pag2 = doc.getElementsByClass("style-item-description-text-mc3G6").first();
-            if(pag2!=null) {
+            if (pag2 != null) {
                 product.setDescription(pag2.text());
                 System.out.println(pag2.text());
             }
@@ -49,17 +50,21 @@ public final class AvitoApi {
             //price
             pag2 = doc.getElementsByClass("js-item-price style-item-price-text-_w822 text-text-LurtD text-" +
                     "size-xxl-UPhmI").first();
-            product.setPrice(Double.valueOf(pag2.attributes().asList().get(0).getValue()));
-            System.out.println(pag2.attributes().asList().get(0).getValue());
+            if (pag2 != null) {
+                product.setPrice(Double.valueOf(pag2.attributes().asList().get(0).getValue()));
+                System.out.println(pag2.attributes().asList().get(0).getValue());
+            }
 
             //adress
             pag2 = doc.getElementsByClass("style-item-address__string-wt61A").first();
-            System.out.println(pag2.text());
+            if (pag2 != null)
+                System.out.println(pag2.text());
 
             //photoUrl
             StringBuilder urls = new StringBuilder("");
             pag2 = doc.getElementsByClass("desktop-1ky5g7j").first();
-            urls.append(pag2.attributes().asList().get(0).getValue()).append("\n");
+            if(pag2!=null)
+                urls.append(pag2.attributes().asList().get(0).getValue()).append("\n");
             Elements pag3 = doc.getElementsByClass("desktop-1i6k59z");
             for (var e : pag3)
                 urls.append(e.attributes().asList().get(0).getValue()).append("\n");
@@ -67,14 +72,13 @@ public final class AvitoApi {
             System.out.println(urls);
             System.out.println("__________________________________");
 
-            if(productService.findProductByPlatform(platform)==null) {
+            if (productService.findProductByPlatform(platform) == null) {
                 System.out.println("added!");
                 productService.saveProduct(productService.mapToProductDto(product));
-            }
-            else{
+            } else {
                 System.out.println("not added");
             }
-            Thread.sleep(2000);
+            Thread.sleep(4000);
         }
     }
 }

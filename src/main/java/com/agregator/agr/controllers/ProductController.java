@@ -59,14 +59,6 @@ public class ProductController {
         return "index";
     }
 
-    @GetMapping("/home")
-    public String home() throws IOException, InterruptedException {
-        AvitoApi avitoApi= new AvitoApi();
-        avitoApi.getProducts("kazan","лыжи");
-        return "index";
-    }
-
-
     @GetMapping("/products/{pageNumber}/{sortMethod}")
     public String listProducts(@PathVariable("pageNumber") int pageNumber, @PathVariable("sortMethod") String sortMethod, Model model) {
         final int countOfProductOnPage = 15;
@@ -109,6 +101,9 @@ public class ProductController {
             //Adding product to Recently watched
             RecentlyWatchedProduct recentlyWatchedProductCart = recentlyWatchedProductService.findCartByUser(user);
             var currentProductList = recentlyWatchedProductCart.getProducts();
+            if(currentProductList.size()>4){
+                currentProductList.remove(0);
+            }
             Product currentProduct = productService.mapToProduct(productDto);
             if (currentProductList.stream().noneMatch(product -> Objects.equals(product.getId(), currentProduct.getId()))) {
                 currentProductList.add(productService.mapToProduct(productDto));
@@ -120,6 +115,7 @@ public class ProductController {
         String[] photos = urls.split("\n");
         model.addAttribute("user", user);
         model.addAttribute("productsInCart", productsInCart);
+        model.addAttribute("recentProducts", user.getRecentlyWatchedProduct().getProducts());
         model.addAttribute("product", productDto);
         model.addAttribute("photos", photos);
         return "detail";

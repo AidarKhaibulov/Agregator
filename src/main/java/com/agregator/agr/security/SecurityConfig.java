@@ -29,9 +29,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/login", "/","/products/**","/home", "/css/**", "/js/**","/register/**",
-                                "/img/**","/lib/**","/mail/**","/scss/**","/products/searchByCategory",
-                                "/products/search","/product/*").permitAll()
+                        .requestMatchers("/login", "/","/products/**","/home", "/css/**", "/js/**"
+                                ,"/register/**","/img/**","/lib/**","/mail/**","/scss/**","/products/searchByCategory",
+                                "/products/search","/product/*","**/swagger-resources/**", "/swagger-ui/**",
+                                "/v3/api-docs/**","/webjars/**").permitAll()
                         .anyRequest().authenticated()
 
                 )
