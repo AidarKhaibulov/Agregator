@@ -125,6 +125,13 @@ public class ProductController {
     public String searchProduct(@RequestParam(value = "query") String query, Model model) {
         List<ProductDto> products = productService.searchProducts(query);
 
+        setModels(model);
+
+        model.addAttribute("products", products);
+        return "shop";
+    }
+
+    private void setModels(Model model) {
         UserEntity user = new UserEntity();
         String username = SecurityUtil.getSessionUser();
         List<Long> productsInCart = new ArrayList<>();
@@ -137,14 +144,15 @@ public class ProductController {
         model.addAttribute("productsInCart", productsInCart);
         model.addAttribute("user", user);
         model.addAttribute("method", "data");
-
-        model.addAttribute("products", products);
-        return "shop";
     }
 
     @GetMapping("/products/searchByCategory")
     public String searchProductByCategory(@RequestParam(value = "query") String query, Model model) {
         List<ProductDto> products = productService.searchProductsByCategory(query);
+
+
+        setModels(model);
+
         model.addAttribute("products", products);
         return "shop";
     }

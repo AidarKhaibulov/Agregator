@@ -95,10 +95,18 @@
                                 <a th:href="@{/products/searchByCategory?query=от 100 литров}" class="dropdown-item">от 100 литров</a>
                             </div>
                         </div>
-                        <a href="" class="nav-item nav-link">Одежда</a>
-                        <a href="" class="nav-item nav-link">Обувь</a>
-                        <a href="" class="nav-item nav-link">Палатки</a>
-                        <a href="" class="nav-item nav-link">Снаряжение</a>
+                        <div class="nav-item dropdown">
+                            <a class="nav-link" data-toggle="dropdown">Одежда <i class="fa fa-angle-down float-right mt-1"></i></a>
+                            <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
+                                <a th:href="@{/products/searchByCategory?query=Куртки}"  class="dropdown-item">Куртки</a>
+                            </div>
+                        </div>
+                        <div class="nav-item dropdown">
+                            <a class="nav-link" data-toggle="dropdown">Обувь <i class="fa fa-angle-down float-right mt-1"></i></a>
+                            <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
+                                <a th:href="@{/products/searchByCategory?query=Ботинки}"  class="dropdown-item">Ботинки</a>
+                            </div>
+                        </div>
                     </div>
                 </nav>
             </div>
