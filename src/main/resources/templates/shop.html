@@ -146,6 +146,7 @@
                     <div class="navbar-nav ml-auto py-0">
                         <a th:href="@{/login}" class="nav-item nav-link" sec:authorize="!isAuthenticated()">Войти</a>
                         <a th:href="@{/register}" class="nav-item nav-link" sec:authorize="!isAuthenticated()">Зарегистрироваться</a>
+                        <a th:href="@{/logout}" sec:authorize="isAuthenticated()">Выйти</a>
                     </div>
                 </div>
             </nav>

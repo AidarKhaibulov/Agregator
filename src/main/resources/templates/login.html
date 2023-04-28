@@ -3,6 +3,7 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 >
 
 <head>
@@ -66,11 +67,39 @@
 
 </head>
 <section layout:fragment="body">
-    <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+    <style>
+        .main {
+            padding: 0px 10px;
+        }
+
+        @media screen and (max-width: 450px) {
+            .login-form{
+                margin-top: 10%;
+            }
+            .register-form{
+                margin-top: 10%;
+            }
+        }
+        @media screen and (min-width: 768px){
+            .main{
+                margin-left: 30%;
+            }
+
+            .sidenav{
+                width: 40%;
+                position: fixed;
+                z-index: 1;
+                top: 0;
+                left: 0;
+            }
+        }
+    </style>
+
     <div class="main">
         <div class="col-md-6 col-sm-12">
-            <div th:if="${param.logout}" class="aler alert-success">
-                Вы вышли из системы!.
+
+            <div th:if="${param.logout}" class="alert alert-success">
+                Вы вышли из системы!
             </div>
             <div th:if="${param.error}" class="alert alert-danger">
                 Неверное имя пользователя или пароль!
@@ -98,7 +127,6 @@
                         >
                     </div>
                     <li><a th:href="@{/register}">Зарегистрироваться</a></li>
-
                     <button type="submit" value="Log in" class="btn btn-secondary">Войти</button>
                 </form>
             </div>
