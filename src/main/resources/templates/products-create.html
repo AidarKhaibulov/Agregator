@@ -70,7 +70,7 @@
 <!-- Section-->
 <section layout:fragment="body" class="py-5">
   <div class="container">
-  <form role="form" method="post" th:action="@{/products/new}" th:object="${product}">
+  <form role="form" method="post" th:action="@{/newProduct}" th:object="${product}">
     <div class="form-row">
       <div class="form-group col-md-6">
         <label for="title">Title</label>
@@ -117,7 +117,7 @@
                 placeholder="Description">
       </div>
     </div>
-    <button type="submit" class="btn btn-primary">Sign in</button>
+    <button type="submit" class="btn btn-primary">Разместить объявление</button>
       </div>
   </form>
   </div>

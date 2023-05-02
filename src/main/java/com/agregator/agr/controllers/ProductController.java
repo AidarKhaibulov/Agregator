@@ -13,6 +13,7 @@ import com.agregator.agr.services.RecentlyWatchedProductService;
 import com.agregator.agr.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Controller
+@Slf4j
 public class ProductController {
     private static ProductService productService = null;
     private final UserService userService;
@@ -54,7 +56,11 @@ public class ProductController {
             productsInCart.addAll(user.getCart().getProducts());
             model.addAttribute("user", user);
         }
+
+        List<Product> popularProducts=productService.getPopularProducts();
+
         model.addAttribute("amountOfProductsInCart", productsInCart.size());
+        model.addAttribute("popularProducts", popularProducts);
         model.addAttribute("user", user);
         return "index";
     }
@@ -186,7 +192,8 @@ public class ProductController {
             return "products-create";
         }
         productService.saveProduct(product);
-        return "redirect:/products";
+        log.info("product {} has been saved!",product);
+        return "index";
     }
 
     @GetMapping("/products/{productId}/edit")

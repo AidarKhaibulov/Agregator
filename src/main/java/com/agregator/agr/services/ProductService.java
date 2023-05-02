@@ -29,4 +29,6 @@ public interface ProductService {
 
 
     Product findProductByPlatform(String platform);
+
+    List<Product> getPopularProducts();
 }

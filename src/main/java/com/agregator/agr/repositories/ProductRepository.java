@@ -14,6 +14,19 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> searchProductsByCategory(String query);
 
     Product findProductByPhotoUrl(String photoUrl);
+
     Product findProductByPlatform(String platform);
 
+
+    // TODO: query to top 10 popular products
+    @Query(value = "select *\n" +
+            "    from products\n" +
+            "        where id in\n" +
+            "\n" +
+            "(SELECT product_id as id\n" +
+            " FROM cart_products\n" +
+            " GROUP BY  product_id\n" +
+            " ORDER BY COUNT(product_id) DESC\n" +
+            " LIMIT 5);",nativeQuery = true)
+    List<Product> findPopularProducts();
 }

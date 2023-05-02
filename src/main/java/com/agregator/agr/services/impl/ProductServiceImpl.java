@@ -106,4 +106,9 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findProductByPlatform(platform);
     }
 
+    @Override
+    public List<Product> getPopularProducts() {
+        return productRepository.findPopularProducts();
+    }
+
 }
