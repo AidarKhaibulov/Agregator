@@ -51,13 +51,13 @@ public class ProductController {
         UserEntity user = new UserEntity();
         String username = SecurityUtil.getSessionUser();
         List<Product> productsInCart = new ArrayList<>();
+        List<Product> popularProducts=productService.getPopularProducts();
+
         if (username != null) {
             user = userService.findByUsername(username);
             productsInCart.addAll(user.getCart().getProducts());
             model.addAttribute("user", user);
         }
-
-        List<Product> popularProducts=productService.getPopularProducts();
 
         model.addAttribute("amountOfProductsInCart", productsInCart.size());
         model.addAttribute("popularProducts", popularProducts);
