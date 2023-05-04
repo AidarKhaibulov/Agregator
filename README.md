@@ -13,6 +13,9 @@ interface that allows users to search desirable products and filter them.
 - Removing ads posts while parsing Vk and automatically adding keywords
 - Convenient ECommerce-like service with abilities to search specified product, add products to favorites, filter by price, date et c.
 - Recently watched products
+- Popular announcements
+- Recommendation service based on users activity
+- Users can place their own announcements
 - Spring pagination&sorting
 - Bean validation
 - Using DTO layer

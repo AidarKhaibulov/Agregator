@@ -65,6 +65,31 @@ public class ProductController {
         return "index";
     }
 
+    @GetMapping("/newProduct")
+    public String createProduct(Model model) {
+        Product product = new Product();
+        model.addAttribute("product", product);
+        return "products-create";
+    }
+
+    @PostMapping("/newProduct")
+    public String saveProduct(@Valid @ModelAttribute("product") ProductDto product, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("product", product);
+            return "products-create";
+        }
+        productService.saveProduct(product,userService.findByUsername(SecurityUtil.getSessionUser()));
+        log.info("product {} has been saved!",product);
+        return "index";
+    }
+
+    @GetMapping("/products/userProducts")
+    public String getUserProducts(Model model){
+        List<Product> userProducts=productService.getUserProducts(userService.findByUsername(SecurityUtil.getSessionUser()));
+        model.addAttribute("userProducts", userProducts);
+        return "user-products";
+    }
+
     @GetMapping("/products/{pageNumber}/{sortMethod}")
     public String listProducts(@PathVariable("pageNumber") int pageNumber, @PathVariable("sortMethod") String sortMethod, Model model) {
         final int countOfProductOnPage = 15;
@@ -176,24 +201,6 @@ public class ProductController {
         model.addAttribute("productsInCart", productsInCart);
         model.addAttribute("user", user);
         return "cart";
-    }
-
-    @GetMapping("/newProduct")
-    public String createProduct(Model model) {
-        Product product = new Product();
-        model.addAttribute("product", product);
-        return "products-create";
-    }
-
-    @PostMapping("/newProduct")
-    public String saveProduct(@Valid @ModelAttribute("product") ProductDto product, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("product", product);
-            return "products-create";
-        }
-        productService.saveProduct(product);
-        log.info("product {} has been saved!",product);
-        return "index";
     }
 
     @GetMapping("/products/{productId}/edit")

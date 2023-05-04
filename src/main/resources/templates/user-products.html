@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://ultraq.net.nz/thymeleaf/layout"
+>
+
+<head>
+  <meta charset="utf-8">
+  <title>Ваши объявления</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="Free HTML Templates" name="keywords">
+  <meta content="Free HTML Templates" name="description">
+
+  <!-- Favicon -->
+  <link href="/img/favicon.ico" rel="icon">
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+
+  <!-- Customized Bootstrap Stylesheet -->
+  <link href="/css/style.css" rel="stylesheet">
+
+
+
+  <!-- Topbar Start -->
+  <div class="container-fluid">
+    <div class="row bg-secondary py-2 px-xl-5">
+      <div class="col-lg-6 d-none d-lg-block">
+        <div class="d-inline-flex align-items-center">
+          <a class="text-dark" href="">FAQs</a>
+          <span class="text-muted px-2">|</span>
+          <a class="text-dark" href="">Help</a>
+          <span class="text-muted px-2">|</span>
+          <a class="text-dark" href="">Support</a>
+        </div>
+      </div>
+      <div class="col-lg-6 text-center text-lg-right">
+        <div class="d-inline-flex align-items-center">
+          <a class="text-dark px-2" href="">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a class="text-dark px-2" href="">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a class="text-dark px-2" href="">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a class="text-dark px-2" href="">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a class="text-dark pl-2" href="">
+            <i class="fab fa-youtube"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Topbar End -->
+
+</head>
+<body>
+
+<!-- Section-->
+<div th:each="product :${userProducts}" class="col-lg-4 col-md-6 col-sm-12 pb-1">
+  <div class="card product-item border-0 mb-4">
+    <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0"
+         style="height: 200px">
+      <img style='object-fit: contain' class="img-fluid rounded-3 mb-3"
+           th:src="${product.photoUrl}" alt="..."/>
+    </div>
+    <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+      <h6 th:text="${product.title}" class="text-truncate mb-3"></h6>
+      <div th:if="${product.price!=0}" class="d-flex justify-content-center">
+        <h6 th:text="${product.price}"></h6>
+      </div>
+      <div th:unless="${product.price!=0}" class="d-flex justify-content-center">
+        <h6></h6>
+      </div>
+    </div>
+    <div class="card-footer d-flex justify-content-between bg-light border">
+      <a th:href="@{/product/{productId}(productId=${product.id})}"
+         class="btn btn-sm text-dark p-0"><i
+              class="fas fa-eye text-primary mr-1"></i>Подробнее</a>
+
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

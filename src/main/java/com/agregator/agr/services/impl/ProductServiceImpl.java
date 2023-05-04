@@ -38,7 +38,12 @@ public class ProductServiceImpl implements ProductService {
         Product product= mapToProduct(productDto);
         productRepository.save(product);
     }
-
+    @Override
+    public void saveProduct(ProductDto productDto, UserEntity user) {
+        Product product= mapToProduct(productDto);
+        product.setCreatedBy(user);
+        productRepository.save(product);
+    }
     @Override
     public ProductDto findProductById(long productId) {
          Product product=productRepository.findById(productId).get();
@@ -109,6 +114,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getPopularProducts() {
         return productRepository.findPopularProducts();
+    }
+
+    @Override
+    public List<Product> getUserProducts(UserEntity user) {
+       return productRepository.findAllByCreatedByEquals(user);
     }
 
 }
