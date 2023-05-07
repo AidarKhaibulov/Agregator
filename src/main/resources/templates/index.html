@@ -120,7 +120,6 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a th:href="@{/products/{pageNumber}/{sortMethod}(sortMethod='date',pageNumber=1)}"  class="nav-item nav-link active">Объявления</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Мои объявления</a>
                                 <div class="dropdown-menu rounded-0 m-0">
@@ -129,6 +128,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="navbar-nav ml-auto py-0">
                             <a th:href="@{/login}" class="nav-item nav-link" sec:authorize="!isAuthenticated()">Войти</a>
                             <a th:href="@{/register}" class="nav-item nav-link" sec:authorize="!isAuthenticated()">Зарегистрироваться</a>

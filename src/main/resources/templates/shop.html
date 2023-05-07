@@ -127,21 +127,21 @@
             <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
                 <a href="" class="text-decoration-none d-block d-lg-none">
                     <h1 class="m-0 display-5 font-weight-semi-bold"><span
-                            class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
+                            class="text-primary font-weight-bold border px-3 mr-1">А</span>Gregator</h1>
                 </a>
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a th:href="@{/products/{pageNumber}/{sortMethod}(sortMethod='date',pageNumber=1)}"class="nav-item nav-link active">Объявления</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Мои объявления</a>
                             <div class="dropdown-menu rounded-0 m-0">
                                 <a th:href="@{/newProduct}" class="dropdown-item">Разместить объявление</a>
-                                <a href="checkout.html" class="dropdown-item">Смотреть мои объявления</a>
+                                <a th:href="@{/products/userProducts}" class="dropdown-item">Смотреть мои объявления</a>
                             </div>
                         </div>
+                        <a th:href="@{/notify}" class="nav-item nav-link">Подписаться на интересующие товары</a>
                     </div>
                     <div class="navbar-nav ml-auto py-0">
                         <a th:href="@{/login}" class="nav-item nav-link" sec:authorize="!isAuthenticated()">Войти</a>
@@ -167,6 +167,7 @@
             >Объявления</a></p>
         </div>
     </div>
+
 </div>
 <!-- Page Header End -->
 
@@ -246,8 +247,8 @@
                     <div class="card product-item border-0 mb-4">
                         <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0"
                              style="height: 200px">
-                            <img style='object-fit: contain' class="img-fluid rounded-3 mb-3"
-                                 th:src="${product.photoUrl}" alt="..."/>
+                            <img style='height: 200px' class="img-fluid rounded-3 mb-3"
+                                 th:src="${product.photoUrl}"  alt="..."/>
                         </div>
                         <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                             <h6 th:text="${product.title}" class="text-truncate mb-3"></h6>
