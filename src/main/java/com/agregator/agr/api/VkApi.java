@@ -33,8 +33,9 @@ public final class VkApi {
     public void getProducts(int productsAmount) throws ClientException, ApiException {
         String addsFilterRegex = "(ПРИМЕЧАНИЕ ОТ АДМИНИСТРАЦИИ)|([П|п]роверенный [П|п]родавец)|" +
                 "(списке проверенных продавцов под номером)";
-        String productsTagsRegex = "([Б|б]отинки)|([К|к]россовки)|([К|к]уртка)|([S|s]oft[S|s]hell)|([К|к]арабины)|" +
-                "([с|С]пальный мешок)|([П|п]уховик)|([Р|р]юкзак)|([П|п]алатка)|([Т|т]ермобель[ё|е])";
+       /* String productsTagsRegex = "([Б|б]отинки)|([К|к]россовки)|([К|к]уртка)|([S|s]oft[S|s]hell)|([К|к]арабины)|" +
+                "([с|С]пальный мешок)|([П|п]уховик)|([Р|р]юкзак)|([П|п]алатка)|([Т|т]ермобель[ё|е])";*/
+        String productsTagsRegex = "([Б|б]отинки?|[К|к]уртк[иа]?|[П|п]уховик[иа]?|[Р|р]юкзак[иа]?|[Т|т]ермобель[ея]?|softshell?|[М|м]ембран[ау]?|[К|к]россовки?|[П|п]алатк[и]?|[С|с]пальны[йе] [М|м]ешок[и]?|[К|к]арабин[ы]?|[Л|л]едоруб[ы]?|[О|о]ттяжк[иа]?|[В|в]еревк[иа]?|[К|к]ошки?|[К|к]аск[аи]?+)";
         GetResponse groupPosts = vk.wall().get(actor).count(productsAmount).domain("place_for_tourist").execute();
         var wallPosts = groupPosts.getItems();
         for (var post : wallPosts) {

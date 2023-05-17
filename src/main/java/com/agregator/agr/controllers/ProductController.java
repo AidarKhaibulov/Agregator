@@ -95,7 +95,6 @@ public class ProductController {
         final int countOfProductOnPage = 15;
         UserEntity user = new UserEntity();
         Pageable currentPage;
-        System.out.println(sortMethod);
         currentPage = switch (sortMethod) {
             case "price" -> PageRequest.of(pageNumber - 1, countOfProductOnPage, Sort.by("price"));
             case "priceReversed" -> PageRequest.of(pageNumber - 1, countOfProductOnPage, Sort.by("price").descending());
@@ -181,7 +180,6 @@ public class ProductController {
     public String searchProductByCategory(@RequestParam(value = "query") String query, Model model) {
         List<ProductDto> products = productService.searchProductsByCategory(query);
 
-
         setModels(model);
 
         model.addAttribute("products", products);
@@ -231,10 +229,12 @@ public class ProductController {
     public String addToFavorite(@PathVariable("productId") Long productId, HttpServletRequest request) {
         String referer = request.getHeader("Referer");
         String username = SecurityUtil.getSessionUser();
+
         UserEntity currentUser = userService.findByUsername(username);
         Cart currentCart = cartService.findCartByUser(currentUser);
         var currentProductList = currentCart.getProducts();
         Product product = productService.mapToProduct(productService.findProductById(productId));
+
         currentProductList.add(product);
         currentCart.setProducts(currentProductList);
         cartService.updateCart(currentCart);
