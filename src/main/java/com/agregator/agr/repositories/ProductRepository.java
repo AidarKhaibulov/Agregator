@@ -26,11 +26,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             select *
             from products
             where id in
-            SELECT product_id as id
-            FROM cart_products
+            (SELECT product_id as id
+             FROM cart_products
             GROUP BY  product_id
-            ORDER BY COUNT(product_id) DESC
-            LIMIT 8);
+             ORDER BY COUNT(product_id) DESC
+             LIMIT 8);
             """,nativeQuery = true)
     List<Product> findPopularProducts();
 }
