@@ -1,2 +1,8 @@
-package com.agregator.agr.service;public class ProductServiceTests {
+package com.agregator.agr.service;
+
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)
+public class ProductServiceTests {
 }

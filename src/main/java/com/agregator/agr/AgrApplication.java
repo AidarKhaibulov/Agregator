@@ -15,13 +15,13 @@ public class AgrApplication {
 	public static  String VK_APP_TOKEN="";
 	public static void main(String[] args) throws IOException, ClientException, ApiException {
 		try (
+				// file should be in resources folder
 				InputStream is2 = AgrApplication.class.getResourceAsStream("/vk.txt");
-		BufferedReader reader2 = new BufferedReader(new InputStreamReader(is2))
-				)
+				BufferedReader reader2 = new BufferedReader(new InputStreamReader(is2))
+		)
 		{
 			VK_APP_TOKEN= reader2.readLine();
 		}
-
 		SpringApplication.run(AgrApplication.class, args);
 
 

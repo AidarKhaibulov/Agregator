@@ -27,6 +27,7 @@ interface that allows users to search desirable products and filter them.
 - BCrypt
 - Spring Security
 - Jsoup
+- JUnit
 - Hibernate
 - PostgreSql
 - Thymeleaf
